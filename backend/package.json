@@ -1,0 +1,16 @@
+{
+  "name": "tp-autoservicio-backend",
+  "version": "1.0.0",
+  "description": "Backend del TP integrador de Programación III (UTN): API JSON + back office EJS",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "mysql2": "^3.24.6",
+    "sequelize": "^6.37.8"
+  }
+}
