@@ -13,15 +13,19 @@ Autoservicio de venta de instrumentos musicales con dos categorías de productos
 ## Estructura del backend
 
 ```
-backend/src/
-├── app.js            punto de entrada del servidor
-├── seed.js           carga de datos iniciales
-├── config/           conexión a la base de datos
-├── routes/           qué URL llama a qué controller
-├── controllers/      lógica de cada petición
-├── models/           modelos de Sequelize (Category, Product, User, Sale, SaleProduct)
-├── middlewares/      validaciones y autenticación
-└── views/            plantillas EJS del back office
+backend/
+├── public/           archivos estáticos del back office (CSS, logo, fotos de ejemplo)
+├── uploads/          imágenes subidas desde el formulario (no se versionan)
+└── src/
+    ├── app.js            punto de entrada del servidor
+    ├── seed.js           carga de datos iniciales
+    ├── config/           conexión a la base de datos y datos del sitio
+    ├── routes/           qué URL llama a qué controller
+    ├── controllers/      lógica de cada petición
+    ├── services/         lógica compartida entre la API y el back office
+    ├── models/           modelos de Sequelize (Category, Product, User, Sale, SaleProduct)
+    ├── middlewares/      validaciones, subida de imágenes y autenticación
+    └── views/            plantillas EJS del back office
 ```
 
 ### Modelo de datos
@@ -56,6 +60,22 @@ En Windows, instalar MySQL Community Server con el instalador oficial, crear la 
 
 **Administrador de prueba** (lo crea el seed): `admin@autoservicio.com` / `admin1234`.
 
+## Back office
+
+Pantallas con vistas EJS para administrar los productos, en `http://localhost:3000/admin`:
+
+| Ruta | Qué muestra |
+|---|---|
+| `GET /admin/dashboard` | Todos los productos (activos e inactivos), separados por categoría |
+| `GET /admin/products/new` | Formulario para agregar un producto |
+| `GET /admin/products/:id/edit` | El mismo formulario con los datos del producto cargados |
+| `POST /admin/products` | Guarda un producto nuevo y vuelve al dashboard |
+| `POST /admin/products/:id` | Guarda los cambios y vuelve al dashboard |
+
+Los formularios HTML solo permiten GET y POST, por eso la edición se envía por POST. La API sigue usando `PUT`. Si los datos son inválidos, el formulario se muestra de nuevo con los errores y lo que se había cargado. Al modificar un producto sin elegir una imagen nueva se conserva la actual.
+
+Las imágenes subidas desde el formulario se guardan en `backend/uploads/`. Las del seed están en `backend/public/img/productos/`.
+
 ---
 
 # Contrato de la API
@@ -69,7 +89,7 @@ URL base: `http://localhost:3000/api`
 - **Autenticación:** las rutas marcadas como *admin* requieren el encabezado `Authorization: Bearer <token>`. El token se obtiene con `POST /auth/login`.
 - **Precios:** se devuelven como número (`185000`), no como texto.
 - **Fechas:** formato ISO 8601 (`2026-10-20T14:30:00.000Z`).
-- **Imágenes:** se guardan en el servidor y se sirven desde `/uploads/<archivo>`. El campo `imagen` de un producto contiene esa ruta (por ejemplo `/uploads/guitarra-criolla.jpg`) o `null`. Formatos permitidos: JPG, PNG y WEBP, hasta 2 MB.
+- **Imágenes:** las subidas por el alta o la modificación se guardan en el servidor y se sirven desde `/uploads/<archivo>`; las fotos de ejemplo del seed se sirven desde `/img/productos/<archivo>`. El campo `imagen` de un producto contiene esa ruta (por ejemplo `/uploads/1761500000000-ab12cd.jpg`) o `null`. Formatos permitidos: JPG, PNG y WEBP, hasta 2 MB.
 
 ### Paginación
 
@@ -161,7 +181,7 @@ Forma de un producto en las respuestas:
   "descripcion": "Guitarra de estudio con tapa de pino y cuerdas de nylon.",
   "precio": 185000,
   "stock": 8,
-  "imagen": "/uploads/guitarra-criolla.jpg",
+  "imagen": "/img/productos/guitarra-criolla.jpg",
   "activo": true,
   "categoryId": 1,
   "category": { "id": 1, "nombre": "Instrumentos" }
