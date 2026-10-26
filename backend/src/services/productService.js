@@ -35,4 +35,14 @@ async function modificarProducto(id, body, file) {
   return Product.findByPk(producto.id, incluirCategoria);
 }
 
-module.exports = { crearProducto, modificarProducto };
+// Baja o reactivación lógica: solo cambia "activo", el producto no se borra.
+// Devuelve null si no existe. Repetir la operación no cambia nada (da el mismo resultado).
+async function cambiarEstado(id, activo) {
+  const producto = await Product.findByPk(id);
+  if (!producto) return null;
+
+  await producto.update({ activo });
+  return Product.findByPk(producto.id, incluirCategoria);
+}
+
+module.exports = { crearProducto, modificarProducto, cambiarEstado };

@@ -1,4 +1,4 @@
-const { crearProducto, modificarProducto } = require('../services/productService');
+const { crearProducto, modificarProducto, cambiarEstado } = require('../services/productService');
 const { borrarImagenSubida } = require('../middlewares/validarProducto');
 
 // Arma el JSON del contrato: precio como número y la categoría en "category".
@@ -42,4 +42,17 @@ const modificar = async (req, res) => {
   }
 };
 
-module.exports = { crear, modificar };
+// Arma el handler que deja el producto activo o inactivo y responde con el contrato.
+const responderEstado = (activo, mensaje) => async (req, res) => {
+  const producto = await cambiarEstado(req.params.id, activo);
+  if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
+  res.json({ mensaje, producto: formatear(producto) });
+};
+
+// DELETE /api/products/:id (baja lógica)
+const desactivar = responderEstado(false, 'Producto desactivado');
+
+// PATCH /api/products/:id/activar
+const activar = responderEstado(true, 'Producto activado');
+
+module.exports = { crear, modificar, desactivar, activar };
