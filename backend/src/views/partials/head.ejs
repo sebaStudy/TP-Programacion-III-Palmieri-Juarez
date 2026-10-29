@@ -1,0 +1,11 @@
+<%# Abre el documento HTML. footer.ejs lo cierra. Variable opcional: titulo %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= locals.titulo ? locals.titulo + ' · ' : '' %><%= sitio.nombre %></title>
+  <link rel="icon" href="<%= sitio.logo %>" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>

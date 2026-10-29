@@ -1,0 +1,271 @@
+/* Estilos del back office. Estética de Día de Muertos. */
+:root {
+  --morado-oscuro: #2b1245;
+  --morado: #4a148c;
+  --magenta: #e91e63;
+  --naranja: #ff6f00;
+  --cempasuchil: #ffb300;
+  --crema: #fff8e1;
+  --texto: #2b1245;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--texto);
+  background: var(--crema);
+  line-height: 1.5;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* Cabecera */
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--morado-oscuro);
+  border-bottom: 4px dashed var(--cempasuchil);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--cempasuchil);
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.marca img { width: 48px; height: 48px; }
+
+.nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.nav a {
+  color: var(--crema);
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+.nav a:hover { border-color: var(--naranja); }
+
+.nav a.activo {
+  background: var(--cempasuchil);
+  color: var(--morado-oscuro);
+  font-weight: 600;
+}
+
+/* Pie */
+.pie {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--crema);
+  background: var(--morado-oscuro);
+  border-top: 4px dashed var(--naranja);
+}
+
+.pie p { margin: 0.15rem 0; }
+
+/* Celulares */
+@media (max-width: 600px) {
+  .cabecera { justify-content: center; text-align: center; }
+  .nav { justify-content: center; }
+}
+
+/* Títulos y botones */
+h1 { margin: 0; font-size: 1.8rem; }
+
+h2 {
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.4rem;
+  font-size: 1.4rem;
+  color: var(--morado);
+  border-bottom: 3px dashed var(--cempasuchil);
+}
+
+.contador {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0 0.6rem;
+  font-size: 0.9rem;
+  color: var(--morado-oscuro);
+  background: var(--cempasuchil);
+  border-radius: 999px;
+}
+
+.encabezado-pagina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.boton {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  background: var(--magenta);
+  border-radius: 999px;
+  transition: background 0.15s;
+}
+
+.boton:hover { background: var(--naranja); }
+.boton-chico { padding: 0.4rem 1rem; font-size: 0.9rem; }
+
+.vacio { color: var(--morado); font-style: italic; }
+
+/* Tarjetas de producto */
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.75rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 rgba(43, 18, 69, 0.15);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.tarjeta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 rgba(43, 18, 69, 0.2);
+}
+
+.tarjeta-cabecera {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(160deg, var(--magenta), var(--naranja) 70%, var(--cempasuchil));
+}
+
+.tarjeta-cabecera .foto { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.tarjeta-cabecera .sin-foto {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  width: 40%;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+
+.tarjeta-info {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 2rem 0.9rem 0.7rem;
+  color: white;
+  background: linear-gradient(transparent, rgba(43, 18, 69, 0.9));
+}
+
+.tarjeta-info h3 { margin: 0; font-size: 1rem; line-height: 1.25; }
+.tarjeta-info .precio { margin: 0.1rem 0 0; font-size: 1.5rem; font-weight: 700; color: var(--cempasuchil); }
+
+.tarjeta-cuerpo { padding: 0.5rem 1rem 1rem; }
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.45rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #e6dcef;
+}
+
+.tarjeta-cuerpo .boton { display: block; margin-top: 0.9rem; text-align: center; }
+
+.estado { font-weight: 600; }
+.estado.activo { color: #2e7d32; }
+.estado.inactivo { color: #b71c1c; }
+
+.tarjeta.inactiva { opacity: 0.6; }
+.tarjeta.inactiva .foto { filter: grayscale(1); }
+
+/* Avisos */
+.aviso, .alerta {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.aviso { color: #1b5e20; background: #e8f5e9; border: 2px solid #66bb6a; }
+.alerta { color: #b71c1c; background: #ffebee; border: 2px solid #ef5350; }
+
+/* Formulario */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 640px;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 rgba(43, 18, 69, 0.15);
+}
+
+.formulario label { margin-top: 0.6rem; font-weight: 600; color: var(--morado); }
+
+.formulario input[type="text"],
+.formulario input[type="number"],
+.formulario select,
+.formulario textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  color: var(--texto);
+  background: var(--crema);
+  border: 2px solid #d9c9e8;
+  border-radius: 10px;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: var(--magenta);
+}
+
+.dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.error { color: #b71c1c; font-weight: 600; }
+.ayuda { color: #6d5a85; }
+
+.imagen-actual { display: flex; align-items: center; gap: 0.75rem; }
+.imagen-actual img { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; }
+
+.acciones { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+
+button.boton { font: inherit; font-weight: 600; border: 0; cursor: pointer; }
+
+.boton-secundario { color: var(--morado); background: transparent; border: 2px solid var(--morado); }
+.boton-secundario:hover { color: white; background: var(--morado); }
+
+@media (max-width: 600px) {
+  .dos-columnas { grid-template-columns: 1fr; }
+}

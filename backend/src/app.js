@@ -1,13 +1,31 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const sequelize = require('./config/database');
 require('./models'); // registra los modelos para que sync() cree sus tablas
 const routes = require('./routes');
+const adminRoutes = require('./routes/adminRoutes');
+const sitio = require('./config/sitio');
 
 const app = express();
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.locals.sitio = sitio; // disponible en todas las vistas como "sitio"
+app.locals.precio = (valor) => // formato de precio para las vistas: $ 185.000
+  Number(valor).toLocaleString('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+app.use(express.static(path.join(__dirname, '..', 'public'))); // CSS, logo, etc.
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // imágenes de productos
+
 app.use(express.json()); // permite leer el body en formato JSON
 app.use('/api', routes); // todas las rutas de la API cuelgan de /api
+app.use('/admin', adminRoutes); // pantallas del back office (EJS)
+
+// Errores no previstos: se registran y se responde 500
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
 
 const PORT = process.env.PORT || 3000;
 

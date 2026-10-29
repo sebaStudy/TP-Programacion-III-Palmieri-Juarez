@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t">
+  <title id="t">Guitarra con cempasúchil y calavera de azúcar</title>
+  <defs>
+    <symbol id="flor" viewBox="0 0 40 40">
+      <g fill="#ffb300">
+        <ellipse cx="20" cy="9" rx="5.5" ry="9"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(45 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(90 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(135 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(180 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(225 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(270 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.5" ry="9" transform="rotate(315 20 20)"/>
+      </g>
+      <g fill="#ff8f00">
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(22.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(67.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(112.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(157.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(202.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(247.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(292.5 20 20)"/>
+        <ellipse cx="20" cy="12" rx="3.5" ry="6.5" transform="rotate(337.5 20 20)"/>
+      </g>
+      <circle cx="20" cy="20" r="4.5" fill="#e65100"/>
+    </symbol>
+  </defs>
+
+  <!-- fondo y aro decorativo -->
+  <circle cx="120" cy="120" r="114" fill="#2b1245"/>
+  <circle cx="120" cy="120" r="110" fill="none" stroke="#ffb300" stroke-width="5"/>
+  <circle cx="120" cy="120" r="100" fill="none" stroke="#ff6f00" stroke-width="2" stroke-dasharray="3 6" stroke-linecap="round"/>
+
+  <!-- guitarra -->
+  <g transform="rotate(-28 120 114)">
+    <!-- mástil y clavijero -->
+    <rect x="113" y="48" width="14" height="68" fill="#5d3a1a"/>
+    <g stroke="#ffcc80" stroke-width="1">
+      <line x1="113" y1="62" x2="127" y2="62"/>
+      <line x1="113" y1="76" x2="127" y2="76"/>
+      <line x1="113" y1="90" x2="127" y2="90"/>
+      <line x1="113" y1="104" x2="127" y2="104"/>
+    </g>
+    <rect x="107" y="20" width="26" height="32" rx="6" fill="#4a148c" stroke="#ffb300" stroke-width="2"/>
+    <g fill="#ffb300">
+      <circle cx="103" cy="28" r="3"/><circle cx="103" cy="40" r="3"/>
+      <circle cx="137" cy="28" r="3"/><circle cx="137" cy="40" r="3"/>
+    </g>
+    <!-- cuerpo -->
+    <path d="M120 112 C98 112 90 128 96 142 C100 152 86 156 82 172 C78 192 96 206 120 206 C144 206 162 192 158 172 C154 156 140 152 144 142 C150 128 142 112 120 112 Z"
+          fill="#e91e63" stroke="#ffb300" stroke-width="3"/>
+    <path d="M120 118 C102 118 96 130 101 141 C105 152 91 157 88 172 C85 189 100 200 120 200 C140 200 155 189 152 172 C149 157 135 152 139 141 C144 130 138 118 120 118 Z"
+          fill="none" stroke="#fff8e1" stroke-width="1.2" stroke-dasharray="2 4"/>
+    <!-- cuerdas -->
+    <g stroke="#fff8e1" stroke-width="0.8" opacity="0.85">
+      <line x1="116" y1="52" x2="116" y2="114"/>
+      <line x1="120" y1="52" x2="120" y2="114"/>
+      <line x1="124" y1="52" x2="124" y2="114"/>
+    </g>
+    <!-- calavera de azúcar -->
+    <ellipse cx="120" cy="165" rx="17" ry="19" fill="#fff8e1"/>
+    <rect x="108" y="175" width="24" height="15" rx="5" fill="#fff8e1"/>
+    <g stroke="#2b1245" stroke-width="1.2">
+      <line x1="114" y1="183" x2="114" y2="190"/>
+      <line x1="120" y1="183" x2="120" y2="190"/>
+      <line x1="126" y1="183" x2="126" y2="190"/>
+    </g>
+    <g>
+      <circle cx="112.5" cy="163" r="7" fill="#2b1245" stroke="#ff6f00" stroke-width="2"/>
+      <circle cx="127.5" cy="163" r="7" fill="#2b1245" stroke="#ff6f00" stroke-width="2"/>
+      <circle cx="112.5" cy="163" r="2.6" fill="#ffb300"/>
+      <circle cx="127.5" cy="163" r="2.6" fill="#ffb300"/>
+    </g>
+    <path d="M120 170 L117.5 175 L122.5 175 Z" fill="#2b1245"/>
+    <circle cx="106.5" cy="172" r="1.8" fill="#e91e63"/>
+    <circle cx="133.5" cy="172" r="1.8" fill="#e91e63"/>
+    <!-- puente -->
+    <rect x="107" y="194" width="26" height="4" rx="1.5" fill="#5d3a1a"/>
+  </g>
+
+  <!-- cempasúchil -->
+  <use href="#flor" x="30" y="150" width="56" height="56"/>
+  <use href="#flor" x="166" y="42" width="44" height="44"/>
+  <use href="#flor" x="164" y="160" width="38" height="38"/>
+</svg>

@@ -1,0 +1,65 @@
+<%# Formulario de alta y edición. Variables: producto (null si es alta), datos, categorias, errores %>
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<% const editando = producto !== null; %>
+<% const errorDe = (campo) => errores.find((e) => e.campo === campo); %>
+
+<main>
+  <h1><%= editando ? 'Editar producto' : 'Agregar producto' %></h1>
+
+  <% if (errores.length > 0) { %>
+    <div class="alerta" role="alert">Revisá los campos marcados antes de guardar.</div>
+  <% } %>
+
+  <form class="formulario" method="POST" enctype="multipart/form-data" novalidate
+        action="<%= editando ? '/admin/products/' + producto.id : '/admin/products' %>">
+
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" maxlength="255" value="<%= datos.nombre ?? '' %>">
+    <% if (errorDe('nombre')) { %><small class="error"><%= errorDe('nombre').mensaje %></small><% } %>
+
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" name="descripcion" rows="3"><%= datos.descripcion ?? '' %></textarea>
+
+    <div class="dos-columnas">
+      <div>
+        <label for="precio">Precio ($)</label>
+        <input type="number" id="precio" name="precio" min="0" step="0.01" value="<%= datos.precio ?? '' %>">
+        <% if (errorDe('precio')) { %><small class="error"><%= errorDe('precio').mensaje %></small><% } %>
+      </div>
+      <div>
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" name="stock" min="0" step="1" value="<%= datos.stock ?? 0 %>">
+        <% if (errorDe('stock')) { %><small class="error"><%= errorDe('stock').mensaje %></small><% } %>
+      </div>
+    </div>
+
+    <label for="categoryId">Categoría</label>
+    <select id="categoryId" name="categoryId">
+      <option value="">Elegí una categoría</option>
+      <% categorias.forEach((c) => { %>
+        <option value="<%= c.id %>" <%= String(datos.categoryId) === String(c.id) ? 'selected' : '' %>><%= c.nombre %></option>
+      <% }) %>
+    </select>
+    <% if (errorDe('categoryId')) { %><small class="error"><%= errorDe('categoryId').mensaje %></small><% } %>
+
+    <%# La imagen va ÚLTIMA: multer lee los campos en el orden en que llegan %>
+    <label for="imagen">Imagen</label>
+    <% if (editando && producto.imagen) { %>
+      <div class="imagen-actual">
+        <img src="<%= producto.imagen %>" alt="Imagen actual de <%= producto.nombre %>">
+        <small>Imagen actual. Si no elegís una nueva, se conserva.</small>
+      </div>
+    <% } %>
+    <input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp">
+    <small class="ayuda">JPG, PNG o WEBP, hasta 2 MB.</small>
+    <% if (errorDe('imagen')) { %><small class="error"><%= errorDe('imagen').mensaje %></small><% } %>
+
+    <div class="acciones">
+      <button type="submit" class="boton"><%= editando ? 'Guardar cambios' : 'Agregar producto' %></button>
+      <a class="boton boton-secundario" href="/admin/dashboard">Cancelar</a>
+    </div>
+  </form>
+</main>
+
+<%- include('../partials/footer') %>

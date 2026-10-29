@@ -1,0 +1,49 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<main>
+  <div class="encabezado-pagina">
+    <h1>Productos</h1>
+    <a class="boton" href="/admin/products/new">+ Agregar producto</a>
+  </div>
+
+  <% if (mensaje) { %>
+    <div class="aviso" role="status"><%= mensaje %></div>
+  <% } %>
+
+  <% categorias.forEach((categoria) => { %>
+    <section class="categoria">
+      <h2><%= categoria.nombre %> <span class="contador"><%= categoria.Products.length %></span></h2>
+
+      <% if (categoria.Products.length === 0) { %>
+        <p class="vacio">Todavía no hay productos en esta categoría.</p>
+      <% } else { %>
+        <div class="grilla">
+          <% categoria.Products.forEach((p) => { %>
+            <article class="tarjeta <%= p.activo ? '' : 'inactiva' %>">
+              <div class="tarjeta-cabecera">
+                <% if (p.imagen) { %>
+                  <img class="foto" src="<%= p.imagen %>" alt="<%= p.nombre %>">
+                <% } else { %>
+                  <img class="sin-foto" src="<%= sitio.logo %>" alt="Producto sin imagen">
+                <% } %>
+                <div class="tarjeta-info">
+                  <h3><%= p.nombre %></h3>
+                  <p class="precio"><%= precio(p.precio) %></p>
+                </div>
+              </div>
+
+              <div class="tarjeta-cuerpo">
+                <p class="fila"><span>Stock</span><span><%= p.stock %> u.</span></p>
+                <p class="fila"><span>Estado</span><span class="estado <%= p.activo ? 'activo' : 'inactivo' %>"><%= p.activo ? 'Activo' : 'Inactivo' %></span></p>
+                <a class="boton boton-chico" href="/admin/products/<%= p.id %>/edit">Editar</a>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  <% }) %>
+</main>
+
+<%- include('../partials/footer') %>
