@@ -196,7 +196,8 @@ h2 {
   border-bottom: 1px solid #e6dcef;
 }
 
-.tarjeta-cuerpo .boton { display: block; margin-top: 0.9rem; text-align: center; }
+.tarjeta-acciones { display: flex; gap: 0.5rem; margin-top: 0.9rem; }
+.tarjeta-acciones .boton { flex: 1; text-align: center; }
 
 .estado { font-weight: 600; }
 .estado.activo { color: #2e7d32; }
@@ -265,6 +266,24 @@ button.boton { font: inherit; font-weight: 600; border: 0; cursor: pointer; }
 
 .boton-secundario { color: var(--morado); background: transparent; border: 2px solid var(--morado); }
 .boton-secundario:hover { color: white; background: var(--morado); }
+
+.boton-peligro { background: #b71c1c; }
+.boton-peligro:hover { background: #7f0000; }
+
+/* Modal de confirmación */
+.modal {
+  width: min(420px, 90vw);
+  padding: 1.5rem;
+  color: var(--texto);
+  background: white;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 rgba(43, 18, 69, 0.25);
+}
+
+.modal::backdrop { background: rgba(43, 18, 69, 0.6); }
+.modal h2 { margin-top: 0; }
+.modal-botones { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem; }
 
 @media (max-width: 600px) {
   .dos-columnas { grid-template-columns: 1fr; }

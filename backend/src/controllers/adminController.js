@@ -1,10 +1,12 @@
 const { Category, Product } = require('../models');
-const { crearProducto, modificarProducto } = require('../services/productService');
+const { crearProducto, modificarProducto, cambiarEstado } = require('../services/productService');
 const { recolectarErrores, borrarImagenSubida } = require('../middlewares/validarProducto');
 
 const MENSAJES = {
   creado: 'Producto creado correctamente',
   modificado: 'Producto modificado correctamente',
+  desactivado: 'Producto desactivado: ya no se ve en la tienda',
+  activado: 'Producto activado: vuelve a verse en la tienda',
 };
 
 const noEncontrado = (res) =>
@@ -88,4 +90,26 @@ const guardarCambios = async (req, res) => {
   res.redirect('/admin/dashboard?mensaje=modificado');
 };
 
-module.exports = { dashboard, formularioNuevo, formularioEditar, errorEnFormulario, guardarNuevo, guardarCambios };
+// Arma el handler que deja el producto activo o inactivo y vuelve al dashboard con un aviso.
+const responderEstado = (activo, mensaje) => async (req, res) => {
+  const producto = await cambiarEstado(req.params.id, activo);
+  if (!producto) return noEncontrado(res);
+  res.redirect(`/admin/dashboard?mensaje=${mensaje}`);
+};
+
+// POST /admin/products/:id/desactivar
+const desactivar = responderEstado(false, 'desactivado');
+
+// POST /admin/products/:id/activar
+const activar = responderEstado(true, 'activado');
+
+module.exports = {
+  dashboard,
+  formularioNuevo,
+  formularioEditar,
+  errorEnFormulario,
+  guardarNuevo,
+  guardarCambios,
+  desactivar,
+  activar,
+};
