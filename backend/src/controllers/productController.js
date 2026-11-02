@@ -1,4 +1,10 @@
-const { crearProducto, modificarProducto, cambiarEstado } = require('../services/productService');
+const {
+  crearProducto,
+  modificarProducto,
+  cambiarEstado,
+  listarActivos,
+  buscarActivo,
+} = require('../services/productService');
 const { borrarImagenSubida } = require('../middlewares/validarProducto');
 
 // Arma el JSON del contrato: precio como número y la categoría en "category".
@@ -15,6 +21,26 @@ function formatear(p) {
     category: p.Category,
   };
 }
+
+// GET /api/products (solo productos activos, paginados)
+// TODO(login): con el token de administrador, aceptar incluirInactivos=true.
+const listar = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 6;
+  const { count, rows } = await listarActivos({ page, limit, categoryId: req.query.categoryId });
+
+  res.json({
+    data: rows.map(formatear),
+    pagination: { page, limit, totalItems: count, totalPages: Math.ceil(count / limit) },
+  });
+};
+
+// GET /api/products/:id (404 si no existe o está inactivo)
+const obtener = async (req, res) => {
+  const producto = await buscarActivo(req.params.id);
+  if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
+  res.json(formatear(producto));
+};
 
 // POST /api/products
 const crear = async (req, res) => {
@@ -55,4 +81,4 @@ const desactivar = responderEstado(false, 'Producto desactivado');
 // PATCH /api/products/:id/activar
 const activar = responderEstado(true, 'Producto activado');
 
-module.exports = { crear, modificar, desactivar, activar };
+module.exports = { listar, obtener, crear, modificar, desactivar, activar };

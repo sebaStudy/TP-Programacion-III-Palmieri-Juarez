@@ -1,7 +1,7 @@
 // Validación de productos con express-validator.
 // Va DESPUÉS de multer: recién ahí existen req.body y req.errorImagen.
 const fs = require('fs');
-const { body, param, validationResult } = require('express-validator');
+const { body, param, query, validationResult } = require('express-validator');
 const { Category } = require('../models');
 
 // Reglas del alta y de la modificación (en la modificación también se envían todos los datos).
@@ -36,6 +36,13 @@ const reglasId = [
   param('id').isInt({ min: 1 }).withMessage('El id debe ser un entero positivo'),
 ];
 
+// Reglas del listado público: todos los parámetros son opcionales.
+const reglasListado = [
+  query('page').optional().isInt({ min: 1 }).withMessage('page debe ser un entero mayor o igual a 1'),
+  query('limit').optional().isInt({ min: 1, max: 50 }).withMessage('limit debe ser un entero entre 1 y 50'),
+  query('categoryId').optional().isInt({ min: 1 }).withMessage('categoryId debe ser un entero positivo'),
+];
+
 // Junta los errores de express-validator y el de la imagen (que dejó multer) en una sola lista.
 function recolectarErrores(req) {
   const errores = validationResult(req)
@@ -61,6 +68,7 @@ function responderErroresApi(req, res, next) {
 module.exports = {
   reglasProducto,
   reglasId,
+  reglasListado,
   recolectarErrores,
   borrarImagenSubida,
   responderErroresApi,

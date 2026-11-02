@@ -45,4 +45,23 @@ async function cambiarEstado(id, activo) {
   return Product.findByPk(producto.id, incluirCategoria);
 }
 
-module.exports = { crearProducto, modificarProducto, cambiarEstado };
+// Listado para el cliente: solo productos activos, paginado y con filtro opcional por categoría.
+async function listarActivos({ page, limit, categoryId }) {
+  const where = { activo: true };
+  if (categoryId) where.categoryId = categoryId;
+
+  return Product.findAndCountAll({
+    where,
+    ...incluirCategoria,
+    order: [['id', 'ASC']],
+    limit,
+    offset: (page - 1) * limit,
+  });
+}
+
+// Detalle para el cliente: devuelve null si no existe o está inactivo.
+async function buscarActivo(id) {
+  return Product.findOne({ where: { id, activo: true }, ...incluirCategoria });
+}
+
+module.exports = { crearProducto, modificarProducto, cambiarEstado, listarActivos, buscarActivo };

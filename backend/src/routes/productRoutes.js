@@ -1,9 +1,13 @@
 const express = require('express');
-const { crear, modificar, desactivar, activar } = require('../controllers/productController');
+const { listar, obtener, crear, modificar, desactivar, activar } = require('../controllers/productController');
 const { subirImagen } = require('../middlewares/upload');
-const { reglasProducto, reglasId, responderErroresApi } = require('../middlewares/validarProducto');
+const { reglasProducto, reglasId, reglasListado, responderErroresApi } = require('../middlewares/validarProducto');
 
 const router = express.Router();
+
+// Rutas públicas: las usa el cliente y solo devuelven productos activos.
+router.get('/', ...reglasListado, responderErroresApi, listar);
+router.get('/:id', ...reglasId, responderErroresApi, obtener);
 
 // TODO(login): proteger estas rutas con el middleware de autenticación cuando esté el login.
 // Orden: multer (lee el formulario) -> reglas -> responde errores -> controller.
