@@ -35,4 +35,33 @@ async function modificarProducto(id, body, file) {
   return Product.findByPk(producto.id, incluirCategoria);
 }
 
-module.exports = { crearProducto, modificarProducto };
+// Baja o reactivación lógica: solo cambia "activo", el producto no se borra.
+// Devuelve null si no existe. Repetir la operación no cambia nada (da el mismo resultado).
+async function cambiarEstado(id, activo) {
+  const producto = await Product.findByPk(id);
+  if (!producto) return null;
+
+  await producto.update({ activo });
+  return Product.findByPk(producto.id, incluirCategoria);
+}
+
+// Listado para el cliente: solo productos activos, paginado y con filtro opcional por categoría.
+async function listarActivos({ page, limit, categoryId }) {
+  const where = { activo: true };
+  if (categoryId) where.categoryId = categoryId;
+
+  return Product.findAndCountAll({
+    where,
+    ...incluirCategoria,
+    order: [['id', 'ASC']],
+    limit,
+    offset: (page - 1) * limit,
+  });
+}
+
+// Detalle para el cliente: devuelve null si no existe o está inactivo.
+async function buscarActivo(id) {
+  return Product.findOne({ where: { id, activo: true }, ...incluirCategoria });
+}
+
+module.exports = { crearProducto, modificarProducto, cambiarEstado, listarActivos, buscarActivo };

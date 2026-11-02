@@ -6,6 +6,8 @@ const {
   errorEnFormulario,
   guardarNuevo,
   guardarCambios,
+  desactivar,
+  activar,
 } = require('../controllers/adminController');
 const { subirImagen } = require('../middlewares/upload');
 const { reglasProducto, reglasId } = require('../middlewares/validarProducto');
@@ -21,5 +23,8 @@ router.post('/products', subirImagen, ...reglasProducto, errorEnFormulario, guar
 
 router.get('/products/:id/edit', formularioEditar);
 router.post('/products/:id', subirImagen, ...reglasId, ...reglasProducto, errorEnFormulario, guardarCambios);
+
+router.post('/products/:id/desactivar', desactivar);
+router.post('/products/:id/activar', activar);
 
 module.exports = router;

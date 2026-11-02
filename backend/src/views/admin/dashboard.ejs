@@ -36,7 +36,16 @@
               <div class="tarjeta-cuerpo">
                 <p class="fila"><span>Stock</span><span><%= p.stock %> u.</span></p>
                 <p class="fila"><span>Estado</span><span class="estado <%= p.activo ? 'activo' : 'inactivo' %>"><%= p.activo ? 'Activo' : 'Inactivo' %></span></p>
-                <a class="boton boton-chico" href="/admin/products/<%= p.id %>/edit">Editar</a>
+                <div class="tarjeta-acciones">
+                  <a class="boton boton-chico" href="/admin/products/<%= p.id %>/edit">Editar</a>
+                  <% if (p.activo) { %>
+                    <button type="button" class="boton boton-chico boton-peligro"
+                      data-accion="desactivar" data-id="<%= p.id %>" data-nombre="<%= p.nombre %>">Eliminar</button>
+                  <% } else { %>
+                    <button type="button" class="boton boton-chico"
+                      data-accion="activar" data-id="<%= p.id %>" data-nombre="<%= p.nombre %>">Activar</button>
+                  <% } %>
+                </div>
               </div>
             </article>
           <% }) %>
@@ -45,5 +54,19 @@
     </section>
   <% }) %>
 </main>
+
+<%# Un solo modal para todos los productos: el script le pone el id y el nombre del que se tocó %>
+<dialog id="modal-confirmar" class="modal">
+  <form method="post">
+    <h2 id="modal-titulo"></h2>
+    <p id="modal-texto"></p>
+    <div class="modal-botones">
+      <button type="button" class="boton boton-secundario" data-cancelar>Cancelar</button>
+      <button type="submit" class="boton" id="modal-boton"></button>
+    </div>
+  </form>
+</dialog>
+
+<script src="/js/dashboard.js"></script>
 
 <%- include('../partials/footer') %>
