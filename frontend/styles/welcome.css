@@ -33,6 +33,34 @@ h1{
     font-weight: 700;
 }
 
+#marca-text-split{
+    display: none;
+    flex-direction: column;
+    text-align: center;
+}
+
+#admin{
+    display: none;
+}
+
+@media (max-width: 440px){
+    .marca-text{
+        display: none;
+    }
+
+    #marca-text-split{
+        display: flex;
+    }
+
+    #admin{
+        display: block;
+    }
+
+    #administrador{
+        display: none;
+    }
+}
+
 h3{
     margin-bottom: 0;
     margin-top: 2.5rem;
