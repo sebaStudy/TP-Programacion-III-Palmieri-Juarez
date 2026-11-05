@@ -9,6 +9,12 @@
     --texto: #2b1245;
 }
 
+.dark {
+    --morado-oscuro: #fff8e1;
+    --crema: #2b1245;
+    --texto: #fff8e1;
+}
+
 body{
     margin: 0;
     background-color: #000000;

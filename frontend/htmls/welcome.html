@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS -->
-    <link rel="stylesheet" href="../styles/welcome.css">
-    <link rel="stylesheet" href="../styles/general.css">
-
-    
-    <link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
-    <title>Main shop</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS -->
+        <link rel="stylesheet" href="../styles/welcome.css">
+        <link rel="stylesheet" href="../styles/general.css">
+        
+        
+        <link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+        <script src="../scrypts/welcome.js" defer></script>
+        <title>Main shop</title>
 </head>
 <body>
     <div id="body">
         <header class="cabecera">
-            <a class="marca" href="/admin/dashboard">
+            <a class="marca" href="">
                 <img src="../assets/img/logo.svg" alt="Logo de La guitarra de Coco">
                 <div id="marca-text-split">
                     <span>La guitarra</span>
@@ -23,6 +24,9 @@
                 <span class="marca-text">La guitarra de Coco</span>
             </a>
             <nav class="nav" aria-label="Principal">
+                <button id="boton-tema" class="btn-menu">
+                    <img id="icono-tema" src="../assets/img/modo oscuro.png" alt="Icono de tema">
+                </button>
                 <a href="/admin/dashboard" class="activo">
                     <span id="administrador">Administrador</span>
                     <span id="admin">Admin</span>
@@ -43,4 +47,5 @@
         </footer>
     </div>
 </body>
+
 </html>

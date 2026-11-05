@@ -6,6 +6,8 @@ require('./models'); // registra los modelos para que sync() cree sus tablas
 const routes = require('./routes');
 const adminRoutes = require('./routes/adminRoutes');
 const sitio = require('./config/sitio');
+const frontendRoutes = require('../../frontend/router');
+const frontendPath = path.join(__dirname, '..', '..', 'frontend');
 
 const app = express();
 
@@ -16,6 +18,20 @@ app.locals.precio = (valor) => // formato de precio para las vistas: $ 185.000
   Number(valor).toLocaleString('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 app.use(express.static(path.join(__dirname, '..', 'public'))); // CSS, logo, etc.
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // imágenes de productos
+app.use('/styles', express.static(path.join(frontendPath, 'styles')));
+app.use('/assets', express.static(path.join(frontendPath, 'assets')));
+app.use('/scrypts', express.static(path.join(frontendPath, 'scrypts')));
+app.get(Object.keys(frontendRoutes), (req, res, next) => {
+  const file = frontendRoutes[req.path];
+  if (!file) return next();
+
+  res.sendFile(path.join(frontendPath, 'htmls', file), (error) => {
+    if (error) {
+      if (error.status === 404) return res.sendStatus(404);
+      return next(error);
+    }
+  });
+});
 
 app.use(express.json()); // permite leer el body en formato JSON
 app.use('/api', routes); // todas las rutas de la API cuelgan de /api

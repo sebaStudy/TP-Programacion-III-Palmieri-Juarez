@@ -67,6 +67,24 @@ h3{
     color: var(--texto);
 }
 
+#icono-tema{
+    height: 40px;
+    width: 40px;
+    filter: invert(1);
+}
+
+#boton-tema{
+    all:unset;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+#boton-tema:hover{
+    filter: brightness(0) saturate(100%)
+        invert(48%) sepia(98%)
+        saturate(1884%) hue-rotate(5deg)
+        brightness(105%) contrast(104%);
+}
 
 /* Campo de texto */
 .input {
