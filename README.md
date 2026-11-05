@@ -71,8 +71,12 @@ Pantallas con vistas EJS para administrar los productos, en `http://localhost:30
 | `GET /admin/products/:id/edit` | El mismo formulario con los datos del producto cargados |
 | `POST /admin/products` | Guarda un producto nuevo y vuelve al dashboard |
 | `POST /admin/products/:id` | Guarda los cambios y vuelve al dashboard |
+| `POST /admin/products/:id/desactivar` | Baja lógica: el producto queda inactivo y deja de verse en la tienda |
+| `POST /admin/products/:id/activar` | Reactiva el producto |
 
 Los formularios HTML solo permiten GET y POST, por eso la edición se envía por POST. La API sigue usando `PUT`. Si los datos son inválidos, el formulario se muestra de nuevo con los errores y lo que se había cargado. Al modificar un producto sin elegir una imagen nueva se conserva la actual.
+
+Desde el dashboard, el botón **Eliminar** (productos activos) y el botón **Activar** (inactivos) piden confirmación en un modal antes de cambiar el estado. Eliminar no borra nada: es la baja lógica (`activo: false`).
 
 Las imágenes subidas desde el formulario se guardan en `backend/uploads/`. Las del seed están en `backend/public/img/productos/`.
 
@@ -207,7 +211,9 @@ Lista paginada de productos **activos**. Es la ruta que usa el cliente.
 }
 ```
 
-**401** si se usa `incluirInactivos=true` sin token.
+**400** si `page`, `limit` (1 a 50) o `categoryId` no son enteros válidos. **401** si se usa `incluirInactivos=true` sin token.
+
+> Hasta que esté el login, `incluirInactivos` todavía no se aplica: el listado devuelve siempre solo los activos.
 
 ### `GET /products/:id`
 
