@@ -11,48 +11,93 @@
     <div class="aviso" role="status"><%= mensaje %></div>
   <% } %>
 
-  <% categorias.forEach((categoria) => { %>
-    <section class="categoria">
-      <h2><%= categoria.nombre %> <span class="contador"><%= categoria.Products.length %></span></h2>
+  <div class="dashboard">
+    <aside>
+      <form class="filtros" method="get" action="/admin/dashboard">
+        <p class="filtros-titulo">Filtros</p>
+        <input type="hidden" name="categoryId" value="<%= filtros.categoryId %>"> <%# conserva la categoría elegida en las pestañas %>
 
-      <% if (categoria.Products.length === 0) { %>
-        <p class="vacio">Todavía no hay productos en esta categoría.</p>
-      <% } else { %>
-        <div class="grilla">
-          <% categoria.Products.forEach((p) => { %>
-            <article class="tarjeta <%= p.activo ? '' : 'inactiva' %>">
-              <div class="tarjeta-cabecera">
-                <% if (p.imagen) { %>
-                  <img class="foto" src="<%= p.imagen %>" alt="<%= p.nombre %>">
-                <% } else { %>
-                  <img class="sin-foto" src="<%= sitio.logo %>" alt="Producto sin imagen">
-                <% } %>
-                <div class="tarjeta-info">
-                  <h3><%= p.nombre %></h3>
-                  <p class="precio"><%= precio(p.precio) %></p>
-                </div>
-              </div>
-
-              <div class="tarjeta-cuerpo">
-                <p class="fila"><span>Stock</span><span><%= p.stock %> u.</span></p>
-                <p class="fila"><span>Estado</span><span class="estado <%= p.activo ? 'activo' : 'inactivo' %>"><%= p.activo ? 'Activo' : 'Inactivo' %></span></p>
-                <div class="tarjeta-acciones">
-                  <a class="boton boton-chico" href="/admin/products/<%= p.id %>/edit">Editar</a>
-                  <% if (p.activo) { %>
-                    <button type="button" class="boton boton-chico boton-peligro"
-                      data-accion="desactivar" data-id="<%= p.id %>" data-nombre="<%= p.nombre %>">Eliminar</button>
-                  <% } else { %>
-                    <button type="button" class="boton boton-chico"
-                      data-accion="activar" data-id="<%= p.id %>" data-nombre="<%= p.nombre %>">Activar</button>
-                  <% } %>
-                </div>
-              </div>
-            </article>
-          <% }) %>
+        <div class="filtro">
+          <label for="q">Nombre</label>
+          <input type="search" id="q" name="q" value="<%= filtros.q %>" placeholder="Ej: guitarra">
         </div>
+
+        <div class="filtro">
+          <label for="estado">Estado</label>
+          <select id="estado" name="estado">
+            <option value="">Todos</option>
+            <option value="activos" <%= filtros.estado === 'activos' ? 'selected' : '' %>>Activos</option>
+            <option value="inactivos" <%= filtros.estado === 'inactivos' ? 'selected' : '' %>>Inactivos</option>
+          </select>
+        </div>
+
+        <button type="submit" class="boton">Filtrar</button>
+        <a class="boton boton-secundario" href="/admin/dashboard">Limpiar</a>
+      </form>
+    </aside>
+
+    <div class="resultados">
+      <nav class="pestanas" aria-label="Categorías">
+        <a class="pestana <%= filtros.categoryId ? '' : 'activa' %>" href="<%= urlCategoria('') %>">
+          Todas <span class="contador"><%= total %></span>
+        </a>
+        <% categorias.forEach((c) => { %>
+          <a class="pestana <%= String(c.id) === filtros.categoryId ? 'activa' : '' %>" href="<%= urlCategoria(c.id) %>">
+            <%= c.nombre %> <span class="contador"><%= c.Products.length %></span>
+          </a>
+        <% }) %>
+      </nav>
+
+      <% if (visibles.length === 0) { %>
+        <p class="vacio">La categoría no existe.</p>
       <% } %>
-    </section>
-  <% }) %>
+
+      <% visibles.forEach((categoria) => { %>
+        <section class="categoria">
+          <% if (!filtros.categoryId) { %>
+            <h2><%= categoria.nombre %> <span class="contador"><%= categoria.Products.length %></span></h2>
+          <% } %>
+
+          <% if (categoria.Products.length === 0) { %>
+            <p class="vacio"><%= hayFiltros ? 'Ningún producto coincide con los filtros.' : 'Todavía no hay productos en esta categoría.' %></p>
+          <% } else { %>
+            <div class="grilla">
+              <% categoria.Products.forEach((p) => { %>
+                <article class="tarjeta <%= p.activo ? '' : 'inactiva' %>">
+                  <div class="tarjeta-cabecera">
+                    <% if (p.imagen) { %>
+                      <img class="foto" src="<%= p.imagen %>" alt="<%= p.nombre %>">
+                    <% } else { %>
+                      <img class="sin-foto" src="<%= sitio.logo %>" alt="Producto sin imagen">
+                    <% } %>
+                    <div class="tarjeta-info">
+                      <h3><%= p.nombre %></h3>
+                      <p class="precio"><%= precio(p.precio) %></p>
+                    </div>
+                  </div>
+
+                  <div class="tarjeta-cuerpo">
+                    <p class="fila"><span>Stock</span><span><%= p.stock %> u.</span></p>
+                    <p class="fila"><span>Estado</span><span class="estado <%= p.activo ? 'activo' : 'inactivo' %>"><%= p.activo ? 'Activo' : 'Inactivo' %></span></p>
+                    <div class="tarjeta-acciones">
+                      <a class="boton boton-chico" href="/admin/products/<%= p.id %>/edit">Editar</a>
+                      <% if (p.activo) { %>
+                        <button type="button" class="boton boton-chico boton-peligro"
+                          data-accion="desactivar" data-id="<%= p.id %>" data-nombre="<%= p.nombre %>">Eliminar</button>
+                      <% } else { %>
+                        <button type="button" class="boton boton-chico"
+                          data-accion="activar" data-id="<%= p.id %>" data-nombre="<%= p.nombre %>">Activar</button>
+                      <% } %>
+                    </div>
+                  </div>
+                </article>
+              <% }) %>
+            </div>
+          <% } %>
+        </section>
+      <% }) %>
+    </div>
+  </div>
 </main>
 
 <%# Un solo modal para todos los productos: el script le pone el id y el nombre del que se tocó %>
