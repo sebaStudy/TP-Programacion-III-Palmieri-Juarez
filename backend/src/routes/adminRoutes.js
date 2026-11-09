@@ -8,6 +8,7 @@ const {
   guardarCambios,
   desactivar,
   activar,
+  ventas,
 } = require('../controllers/adminController');
 const { subirImagen } = require('../middlewares/upload');
 const { reglasProducto, reglasId } = require('../middlewares/validarProducto');
@@ -17,6 +18,7 @@ const router = express.Router();
 // Pantallas del back office (devuelven HTML con EJS). Los formularios usan solo GET y POST.
 // TODO(login): proteger estas rutas cuando esté el login.
 router.get('/dashboard', dashboard);
+router.get('/sales', ventas);
 
 router.get('/products/new', formularioNuevo);
 router.post('/products', subirImagen, ...reglasProducto, errorEnFormulario, guardarNuevo);

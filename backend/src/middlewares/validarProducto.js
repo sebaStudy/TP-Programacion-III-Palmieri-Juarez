@@ -3,6 +3,7 @@
 const fs = require('fs');
 const { body, param, query, validationResult } = require('express-validator');
 const { Category } = require('../models');
+const { reglasPaginacion } = require('./validarPaginacion');
 
 // Reglas del alta y de la modificación (en la modificación también se envían todos los datos).
 // bail() corta la cadena de un campo en su primer error, así cada campo muestra un solo mensaje.
@@ -38,8 +39,7 @@ const reglasId = [
 
 // Reglas del listado público: todos los parámetros son opcionales.
 const reglasListado = [
-  query('page').optional().isInt({ min: 1 }).withMessage('page debe ser un entero mayor o igual a 1'),
-  query('limit').optional().isInt({ min: 1, max: 50 }).withMessage('limit debe ser un entero entre 1 y 50'),
+  ...reglasPaginacion,
   query('categoryId').optional().isInt({ min: 1 }).withMessage('categoryId debe ser un entero positivo'),
 ];
 

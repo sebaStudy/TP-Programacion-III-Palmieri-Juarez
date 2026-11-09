@@ -1,10 +1,10 @@
-// Carga datos iniciales: categorías, el administrador de prueba y productos.
+// Carga datos iniciales: categorías, el administrador de prueba, productos y ventas de ejemplo.
 // Se ejecuta aparte del servidor con:  npm run seed
 // ATENCIÓN: borra y vuelve a crear todas las tablas (se pierden los datos actuales).
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const sequelize = require('./config/database');
-const { Category, Product, User } = require('./models');
+const { Category, Product, User, Sale, SaleProduct } = require('./models');
 
 const instrumentos = [
   { nombre: 'Guitarra criolla clásica', descripcion: 'Guitarra de estudio con tapa de pino y cuerdas de nylon.', precio: 185000, stock: 8, imagen: '/img/productos/guitarra-criolla.jpg' },
@@ -32,6 +32,22 @@ const accesorios = [
   { nombre: 'Soporte plegable para teclado', descripcion: 'Estructura en X, regulable en altura.', precio: 28000, stock: 9, activo: false },
 ];
 
+// Ventas de ejemplo. Cada producto va con su cantidad: [nombre del producto, cantidad].
+// El precio y el total no se escriben acá: salen de los productos cargados, como cuando se registra una compra.
+const ventas = [
+  { nombreCliente: 'Julián', fecha: '2026-10-08T15:20:00', items: [['Ukelele soprano', 1], ['Set de cuerdas para guitarra criolla', 1], ['Capodastro de aluminio', 1]] },
+  { nombreCliente: 'Valentina', fecha: '2026-10-12T11:15:00', items: [['Guitarra criolla clásica', 1], ['Púas pack x12', 3], ['Set de cuerdas para guitarra criolla', 1]] },
+  { nombreCliente: 'Agustina', fecha: '2026-10-15T18:10:00', items: [['Piano digital 88 teclas', 1]] },
+  { nombreCliente: 'Martín', fecha: '2026-10-19T17:40:00', items: [['Batería acústica 5 piezas', 1], ['Baquetas 5A de madera', 2]] },
+  { nombreCliente: 'Lucía', fecha: '2026-10-24T10:05:00', items: [['Ukelele soprano', 2], ['Afinador cromático con clip', 2]] },
+  { nombreCliente: 'Federico', fecha: '2026-10-27T11:45:00', items: [['Guitarra criolla clásica', 1], ['Funda acolchada para guitarra', 1]] },
+  { nombreCliente: 'Sofía', fecha: '2026-10-30T19:25:00', items: [['Guitarra eléctrica semihueca', 1], ['Cable para instrumento 3 m', 1], ['Correa para guitarra', 1], ['Set de cuerdas para guitarra eléctrica', 2]] },
+  { nombreCliente: 'Florencia', fecha: '2026-11-02T20:05:00', items: [['Teclado electrónico 61 teclas', 1], ['Cable para instrumento 3 m', 1], ['Afinador cromático con clip', 1]] },
+  { nombreCliente: 'Tomás', fecha: '2026-11-04T16:50:00', items: [['Cajón peruano', 2]] },
+  { nombreCliente: 'Camila', fecha: '2026-11-07T12:30:00', items: [['Bajo eléctrico 4 cuerdas', 1], ['Cable para instrumento 3 m', 2], ['Púas pack x12', 2]] },
+  { nombreCliente: 'Nicolás', fecha: '2026-11-08T09:40:00', items: [['Baquetas 5A de madera', 3], ['Púas pack x12', 1], ['Cajón peruano', 1]] },
+];
+
 async function seed() {
   await sequelize.sync({ force: true }); // borra y recrea todas las tablas
 
@@ -51,9 +67,27 @@ async function seed() {
     ...accesorios.map((p) => ({ ...p, categoryId: catAccesorios.id })),
   ]);
 
+  const productos = await Product.findAll();
+  const productoPorNombre = Object.fromEntries(productos.map((p) => [p.nombre, p]));
+
+  for (const venta of ventas) {
+    const items = venta.items.map(([nombre, cantidad]) => ({ producto: productoPorNombre[nombre], cantidad }));
+    const total = items.reduce((suma, item) => suma + Number(item.producto.precio) * item.cantidad, 0);
+
+    const sale = await Sale.create({ nombreCliente: venta.nombreCliente, fecha: venta.fecha, total });
+    await SaleProduct.bulkCreate(
+      items.map((item) => ({
+        saleId: sale.id,
+        productId: item.producto.id,
+        cantidad: item.cantidad,
+        precioUnitario: item.producto.precio, // el precio de ese momento
+      }))
+    );
+  }
+
   const activos = await Product.count({ where: { activo: true } });
   const total = await Product.count();
-  console.log(`Seed listo: 2 categorías, 1 administrador, ${total} productos (${activos} activos).`);
+  console.log(`Seed listo: 2 categorías, 1 administrador, ${total} productos (${activos} activos), ${ventas.length} ventas de ejemplo.`);
 }
 
 seed()

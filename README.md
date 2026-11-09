@@ -62,7 +62,7 @@ En Windows, instalar MySQL Community Server con el instalador oficial, crear la 
 
 ## Back office
 
-Pantallas con vistas EJS para administrar los productos, en `http://localhost:3000/admin`:
+Pantallas con vistas EJS para administrar los productos y ver las ventas, en `http://localhost:3000/admin`:
 
 | Ruta | Qué muestra |
 |---|---|
@@ -73,6 +73,7 @@ Pantallas con vistas EJS para administrar los productos, en `http://localhost:30
 | `POST /admin/products/:id` | Guarda los cambios y vuelve al dashboard |
 | `POST /admin/products/:id/desactivar` | Baja lógica: el producto queda inactivo y deja de verse en la tienda |
 | `POST /admin/products/:id/activar` | Reactiva el producto |
+| `GET /admin/sales` | Listado de ventas (6 por página, con `?page=N`): muestra el primer producto de cada una y un botón "Detalle" que abre un modal con todos sus productos |
 
 Los formularios HTML solo permiten GET y POST, por eso la edición se envía por POST. La API sigue usando `PUT`. Si los datos son inválidos, el formulario se muestra de nuevo con los errores y lo que se había cargado. Al modificar un producto sin elegir una imagen nueva se conserva la actual.
 
