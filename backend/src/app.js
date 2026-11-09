@@ -21,17 +21,14 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // i
 app.use('/styles', express.static(path.join(frontendPath, 'styles')));
 app.use('/assets', express.static(path.join(frontendPath, 'assets')));
 app.use('/scrypts', express.static(path.join(frontendPath, 'scrypts')));
-app.get(Object.keys(frontendRoutes), (req, res, next) => {
-  const file = frontendRoutes[req.path];
-  if (!file) return next();
-
-  res.sendFile(path.join(frontendPath, 'htmls', file), (error) => {
-    if (error) {
-      if (error.status === 404) return res.sendStatus(404);
-      return next(error);
-    }
+// Cada página del front es una ruta que devuelve su archivo HTML (si el archivo todavía no existe, responde 404).
+for (const [ruta, archivo] of Object.entries(frontendRoutes)) {
+  app.get(ruta, (req, res) => {
+    res.sendFile(path.join(frontendPath, 'htmls', archivo), (error) => {
+      if (error) res.sendStatus(error.status || 500);
+    });
   });
-});
+}
 
 app.use(express.json()); // permite leer el body en formato JSON
 app.use('/api', routes); // todas las rutas de la API cuelgan de /api
