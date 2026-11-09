@@ -1,0 +1,90 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<main>
+  <div class="encabezado-pagina">
+    <h1>Ventas <span class="contador"><%= totalItems %></span></h1>
+  </div>
+
+  <% if (ventas.length === 0) { %>
+    <p class="vacio"><%= totalItems === 0 ? 'Todavía no hay ventas.' : 'No hay ventas en esta página.' %></p>
+  <% } else { %>
+    <%# En pantallas grandes es una tabla; en pantallas chicas el CSS muestra cada fila como una tarjeta (usa los data-label) %>
+    <table class="tabla-ventas">
+      <thead>
+        <tr>
+          <th>Venta</th>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Productos</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% ventas.forEach((v) => { %>
+          <tr>
+            <td data-label="Venta">#<%= v.id %></td>
+            <td data-label="Fecha"><%= fecha(v.fecha) %></td>
+            <td data-label="Cliente"><%= v.nombreCliente %></td>
+            <td data-label="Productos">
+              <%# En la tabla solo se ve el primer producto; el detalle completo está en el modal %>
+              <ul class="lista-productos">
+                <li>
+                  <span><%= v.productos[0].cantidad %> × <%= v.productos[0].nombre %></span>
+                </li>
+                <% if (v.productos.length > 1) { %>
+                  <li class="mas">… y <%= v.productos.length - 1 %> más</li>
+                <% } %>
+              </ul>
+            </td>
+            <td data-label="Total" class="total"><%= precio(v.total) %></td>
+            <td data-label="Acciones">
+              <button type="button" class="boton boton-secundario boton-chico" data-detalle="detalle-<%= v.id %>">Detalle</button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <%# Un modal por venta, con todos sus productos. El botón "Detalle" abre el que tiene su id %>
+    <% ventas.forEach((v) => { %>
+      <dialog id="detalle-<%= v.id %>" class="modal modal-detalle">
+        <h2>Venta #<%= v.id %></h2>
+        <p><strong>Cliente:</strong> <%= v.nombreCliente %><br><strong>Fecha:</strong> <%= fecha(v.fecha) %></p>
+        <ul class="lista-productos">
+          <% v.productos.forEach((p) => { %>
+            <li>
+              <span><%= p.cantidad %> × <%= p.nombre %> <small>(<%= precio(p.precioUnitario) %> c/u)</small></span>
+              <span><%= precio(p.subtotal) %></span>
+            </li>
+          <% }) %>
+        </ul>
+        <p class="detalle-total">Total: <%= precio(v.total) %></p>
+        <div class="modal-botones">
+          <button type="button" class="boton" data-cerrar>Cerrar</button>
+        </div>
+      </dialog>
+    <% }) %>
+  <% } %>
+
+  <nav class="paginador" aria-label="Páginas de ventas">
+    <% if (page > 1) { %>
+      <a class="boton boton-secundario boton-chico" href="/admin/sales?page=<%= Math.min(page - 1, totalPages) %>">‹ Anterior</a>
+    <% } else { %>
+      <span class="boton boton-chico deshabilitado">‹ Anterior</span>
+    <% } %>
+
+    <span class="paginador-texto">Página <%= page %> de <%= totalPages %></span>
+
+    <% if (page < totalPages) { %>
+      <a class="boton boton-secundario boton-chico" href="/admin/sales?page=<%= page + 1 %>">Siguiente ›</a>
+    <% } else { %>
+      <span class="boton boton-chico deshabilitado">Siguiente ›</span>
+    <% } %>
+  </nav>
+</main>
+
+<script src="/js/sales.js"></script>
+
+<%- include('../partials/footer') %>

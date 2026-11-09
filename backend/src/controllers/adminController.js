@@ -1,6 +1,8 @@
 const { Op } = require('sequelize');
 const { Category, Product } = require('../models');
 const { crearProducto, modificarProducto, cambiarEstado } = require('../services/productService');
+const { listarVentas, VENTAS_POR_PAGINA } = require('../services/saleService');
+const { leerPaginacion } = require('../middlewares/validarPaginacion');
 const { recolectarErrores, borrarImagenSubida } = require('../middlewares/validarProducto');
 
 const MENSAJES = {
@@ -56,6 +58,23 @@ const dashboard = async (req, res) => {
     filtros,
     hayFiltros: Boolean(filtros.q || filtros.categoryId || filtros.estado),
     mensaje: MENSAJES[req.query.mensaje] || null,
+  });
+};
+
+// GET /admin/sales?page=N: las ventas con sus productos, de a una página
+const ventas = async (req, res) => {
+  const { page, limit } = leerPaginacion(req.query, VENTAS_POR_PAGINA);
+  const { ventas, totalItems } = await listarVentas({ page, limit });
+  const totalPages = Math.max(1, Math.ceil(totalItems / limit));
+
+  res.render('admin/sales', {
+    titulo: 'Ventas',
+    seccion: 'ventas',
+    ventas,
+    totalItems,
+    page,
+    totalPages,
+    fecha: (valor) => new Date(valor).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }),
   });
 };
 
@@ -145,4 +164,5 @@ module.exports = {
   guardarCambios,
   desactivar,
   activar,
+  ventas,
 };
