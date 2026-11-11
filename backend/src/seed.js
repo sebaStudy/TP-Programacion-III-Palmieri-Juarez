@@ -17,6 +17,16 @@ const instrumentos = [
   { nombre: 'Ukelele soprano', descripcion: 'Tamaño compacto, ideal para principiantes.', precio: 68000, stock: 10, imagen: '/img/productos/ukelele.jpg' },
   { nombre: 'Pandereta con parche', descripcion: 'Aro de madera con platillos de metal.', precio: 18000, stock: 15, activo: false, imagen: '/img/productos/pandereta.jpg' },
   { nombre: 'Armónica diatónica en Do', descripcion: 'Diez agujeros, afinación Richter.', precio: 24000, stock: 20, activo: false, imagen: '/img/productos/armonica.jpg' },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
+  { nombre: 'Cajón peruano', descripcion: 'Madera de abedul con bordonas ajustables.', precio: 95000, stock: 12 },
 ];
 
 const accesorios = [

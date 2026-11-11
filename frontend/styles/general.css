@@ -7,25 +7,63 @@
     --cempasuchil: #ffb300;
     --crema: #fff8e1;
     --texto: #2b1245;
+    --blanco: #fff;
+    --negro: #000;
+    --transparente: transparent;
+    --superficie: #fff;
+    --borde-control: #d9c9e8;
+    --texto-ayuda: #6d5a85;
+    --morado-titulo: #4a148c;
+    --texto-activo: #2b1245;
+    --superficie-oscura: #3b2154;
+    --borde-control-oscuro: #765a91;
+    --texto-ayuda-oscuro: #d0bade;
+    --morado-titulo-oscuro: #f3d9ff;
+    --sombra-tarjeta: rgba(43, 18, 69, 0.15);
+    --sombra-tarjeta-hover: rgba(43, 18, 69, 0.2);
+    --sombra-modal: rgba(43, 18, 69, 0.25);
+    --overlay-inactivo: rgba(255, 255, 255, 0.75);
+    --overlay-tarjeta-fuerte: rgba(43, 18, 69, 0.96);
+    --overlay-tarjeta-medio: rgba(43, 18, 69, 0.78);
+    --overlay-tarjeta-suave: rgba(43, 18, 69, 0.2);
+    --overlay-modal: rgba(43, 18, 69, 0.6);
+    --borde-en-oscuro: rgba(255, 255, 255, 0.35);
+    --estado-activo: #2e7d32;
+    --estado-inactivo: #b71c1c;
+    --estado-activo-en-oscuro: #81c784;
+    --estado-inactivo-en-oscuro: #ef9a9a;
+    --exito: #1b5e20;
+    --exito-fondo: #e8f5e9;
+    --exito-borde: #66bb6a;
+    --error: #b71c1c;
+    --error-fondo: #ffebee;
+    --error-borde: #ef5350;
+    --peligro: #b71c1c;
+    --peligro-hover: #7f0000;
 }
 
 .dark {
     --morado-oscuro: #fff8e1;
     --crema: #2b1245;
     --texto: #fff8e1;
+    --superficie: var(--superficie-oscura);
+    --borde-control: var(--borde-control-oscuro);
+    --texto-ayuda: var(--texto-ayuda-oscuro);
+    --morado-titulo: var(--morado-titulo-oscuro);
 }
 
 body{
     margin: 0;
-    background-color: #000000;
+    background-color: var(--negro);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-h1{
-    margin: 0;
+/* header */
+#logo_nav{
+    width: 50px;
+    height: 50px;
 }
 
-/* Header */
 .cabecera {
     display: flex;
     flex-wrap: wrap;
@@ -65,6 +103,47 @@ h1{
     background: var(--cempasuchil);
     color: var(--morado-oscuro);
     font-weight: 600;
+}
+
+#icono-tema{
+    height: 40px;
+    width: 40px;
+    filter: invert(1);
+}
+
+.boton-mono-color{
+    all:unset;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.boton-mono-color:hover{
+    filter:
+        brightness(0) saturate(100%)
+        invert(48%) sepia(98%)
+        saturate(1884%) hue-rotate(5deg)
+        brightness(105%) contrast(104%);
+}
+
+#titulo-text-split{
+    display: none;
+    flex-direction: column;
+    text-align: center;
+}
+
+@media (max-width: 483px){
+    .marca-text{
+        display: none;
+    }
+
+    #titulo-text-split{
+        display: flex;
+    }
+}
+
+/* main */
+h1{
+    margin: 0;
 }
 
 /* Footer */

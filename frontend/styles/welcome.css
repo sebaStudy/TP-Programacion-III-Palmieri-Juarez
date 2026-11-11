@@ -4,6 +4,10 @@
     flex-direction: column;
 }
 
+#admin{
+    display: none;
+}
+
 main{
     background-color: var(--crema);
     display: flex;
@@ -13,14 +17,10 @@ main{
     flex: 1;
 }
 
-#logo_nav{
-    width: 50px;
-    height: 50px;
-}
-
-#logo{
-    width: 300px;
-    height: 300px;
+.form-ingreso{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1{
@@ -33,25 +33,12 @@ h1{
     font-weight: 700;
 }
 
-#marca-text-split{
-    display: none;
-    flex-direction: column;
-    text-align: center;
+#logo{
+    width: 300px;
+    height: 300px;
 }
 
-#admin{
-    display: none;
-}
-
-@media (max-width: 440px){
-    .marca-text{
-        display: none;
-    }
-
-    #marca-text-split{
-        display: flex;
-    }
-
+@media (max-width: 483px){
     #admin{
         display: block;
     }
@@ -67,28 +54,10 @@ h3{
     color: var(--texto);
 }
 
-#icono-tema{
-    height: 40px;
-    width: 40px;
-    filter: invert(1);
-}
-
-#boton-tema{
-    all:unset;
-    cursor: pointer;
-    transition: filter 0.3s ease;
-}
-
-#boton-tema:hover{
-    filter: brightness(0) saturate(100%)
-        invert(48%) sepia(98%)
-        saturate(1884%) hue-rotate(5deg)
-        brightness(105%) contrast(104%);
-}
 
 /* Campo de texto */
 .input {
-    color: var(--crema);
+    color: var(--blanco);
     margin-top: 0.5rem;
     margin-bottom: 1rem;
     border-radius: 10px;
@@ -103,7 +72,7 @@ h3{
 }
 
 .input::placeholder{
-    color: var(--crema);
+    color: var(--blanco);
 }
 
 .input:hover {
@@ -121,7 +90,7 @@ h3{
     position: relative;
     padding: 10px 24px;
     font-size: 18px;
-    color: var(--crema);
+    color: var(--blanco);
     border: 2px solid var(--naranja);
     border-radius: 34px;
     background-color: var(--magenta);
@@ -145,12 +114,12 @@ h3{
 }
 
 .button:hover::before {
-scale: 3;   
+    scale: 3;
 }
 
 .button:hover {
     scale: 1.1;
-    box-shadow: 0 0px 20px var(--color-primario);
+    box-shadow: 0 0px 20px var(--magenta);
 }
 
 .button:active {

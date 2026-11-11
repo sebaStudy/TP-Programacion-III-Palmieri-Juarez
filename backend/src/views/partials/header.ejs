@@ -5,6 +5,9 @@
     <span><%= sitio.nombre %></span>
   </a>
   <nav class="nav" aria-label="Principal">
+    <button id="boton-tema" class="boton-mono-color" type="button" aria-label="Cambiar tema">
+      <img id="icono-tema" src="/assets/img/modo oscuro.png" alt="Cambiar tema">
+    </button>
     <a href="/admin/dashboard" class="<%= locals.seccion === 'dashboard' ? 'activo' : '' %>">Productos</a>
     <a href="/admin/products/new" class="<%= locals.seccion === 'nuevo' ? 'activo' : '' %>">Agregar producto</a>
   </nav>
