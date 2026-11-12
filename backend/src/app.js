@@ -21,8 +21,9 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // i
 app.use('/styles', express.static(path.join(frontendPath, 'styles')));
 app.use('/assets', express.static(path.join(frontendPath, 'assets')));
 app.use('/scrypts', express.static(path.join(frontendPath, 'scrypts')));
-app.get(Object.keys(frontendRoutes), (req, res, next) => {
-  const file = frontendRoutes[req.path];
+app.get([...Object.keys(frontendRoutes), '/productos/:pagina'], (req, res, next) => {
+  const ruta = /^\/productos\/\d+$/.test(req.path) ? '/productos' : req.path;
+  const file = frontendRoutes[ruta];
   if (!file) return next();
 
   res.sendFile(path.join(frontendPath, 'htmls', file), (error) => {

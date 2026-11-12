@@ -90,7 +90,7 @@ main {
 .pie p { margin: 0.15rem 0; }
 
 /* Celulares */
-@media (max-width: 600px) {
+@media (max-width: 386px) {
   .cabecera { justify-content: center; text-align: center; }
   .nav { justify-content: center; }
 }
@@ -143,7 +143,7 @@ h2 {
 /* Tarjetas de producto */
 .grilla {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(230px, calc((100% - 1.75rem) / 2)), 1fr));
   gap: 1.75rem;
 }
 
@@ -221,10 +221,6 @@ h2 {
 .tarjeta:hover .tarjeta-cuerpo,
 .tarjeta:focus-within .tarjeta-cuerpo {
   transform: translateY(0);
-}
-
-@media (hover: none) {
-  .tarjeta-cuerpo { transform: translateY(0); }
 }
 
 .fila {

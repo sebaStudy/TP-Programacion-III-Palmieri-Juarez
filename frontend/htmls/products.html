@@ -33,6 +33,10 @@
         <div class="encabezado-pagina">
             <h1>Productos</h1>
         </div>
+        <div class="filtros-categoria" role="group" aria-label="Filtrar productos por categoría">
+            <button class="boton-categoria activo" type="button" data-categoria="Instrumentos" aria-pressed="true">Instrumentos</button>
+            <button class="boton-categoria" type="button" data-categoria="Accesorios" aria-pressed="false">Accesorios</button>
+        </div>
         <p id="estado-carga" role="status" aria-live="polite">Cargando productos...</p>
         <div id="listado-productos"></div>
     </main>

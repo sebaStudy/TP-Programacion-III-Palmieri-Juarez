@@ -1,7 +1,56 @@
 /* productos */
 const listado = document.getElementById('listado-productos');
 const estadoCarga = document.getElementById('estado-carga');
+const botonesCategoria = document.querySelectorAll('[data-categoria]');
 const LOGO = '/assets/img/logo.svg';
+const PRODUCTOS_POR_PAGINA = 12;
+let productosCargados = null;
+let categoriaSeleccionada = obtenerCategoriaDeRuta();
+let paginaSeleccionada = obtenerPaginaDeRuta();
+
+function obtenerCategoriaDeRuta() {
+    const categoria = new URLSearchParams(window.location.search).get('categoria');
+    return categoria === 'Accesorios' ? categoria : 'Instrumentos';
+}
+
+function obtenerPaginaDeRuta() {
+    const coincidencia = window.location.pathname.match(/^\/productos\/(\d+)\/?$/);
+    const pagina = coincidencia ? Number(coincidencia[1]) : 1;
+    const paginaValida = Number.isSafeInteger(pagina) && pagina > 0 ? pagina : 1;
+    if (coincidencia && window.location.pathname !== `/productos/${paginaValida}`) {
+        actualizarRuta(paginaValida);
+    }
+    return paginaValida;
+}
+
+function actualizarRuta(pagina) {
+    const parametros = new URLSearchParams({ categoria: categoriaSeleccionada });
+    const ruta = `/productos/${pagina}?${parametros}`;
+    window.history.replaceState(null, '', ruta);
+}
+
+botonesCategoria.forEach((boton) => {
+    const seleccionado = boton.dataset.categoria === categoriaSeleccionada;
+    boton.classList.toggle('activo', seleccionado);
+    boton.setAttribute('aria-pressed', String(seleccionado));
+});
+
+botonesCategoria.forEach((boton) => {
+    boton.addEventListener('click', () => {
+        categoriaSeleccionada = boton.dataset.categoria;
+        paginaSeleccionada = 1;
+        actualizarRuta(paginaSeleccionada);
+        botonesCategoria.forEach((otroBoton) => {
+            const seleccionado = otroBoton === boton;
+            otroBoton.classList.toggle('activo', seleccionado);
+            otroBoton.setAttribute('aria-pressed', String(seleccionado));
+        });
+        if (productosCargados !== null) {
+            mostrarProductos(productosCargados);
+        }
+    });
+});
+
 /* productos */
 function crearProducto(producto) {
     const tarjeta = document.createElement('article');
@@ -77,43 +126,58 @@ function crearProducto(producto) {
 }
 
 function mostrarProductos(productos) {
-    const categorias = new Map();
-    for (const producto of productos) {
-        const categoria = producto.category;
-        if (!categoria) {
+    const productosFiltrados = productos.filter((producto) => {
+        if (!producto.category) {
             throw new Error('Un producto no tiene una categoría asociada.');
         }
 
-        if (!categorias.has(categoria.id)) {
-            categorias.set(categoria.id, { nombre: categoria.nombre, productos: [] });
-        }
-        categorias.get(categoria.id).productos.push(producto);
-    }
+        return producto.category.nombre === categoriaSeleccionada;
+    });
 
     listado.replaceChildren();
-    for (const [id, categoria] of categorias) {
-        const seccion = document.createElement('section');
-        seccion.className = 'categoria';
-
-        const titulo = document.createElement('h2');
-        titulo.textContent = categoria.nombre;
-
-        const contador = document.createElement('span');
-        contador.className = 'contador';
-        contador.textContent = String(categoria.productos.length);
-        titulo.append(' ', contador);
-
-        const grilla = document.createElement('div');
-        grilla.className = 'grilla';
-        for (const producto of categoria.productos) {
-            grilla.append(crearProducto(producto));
-        }
-
-        seccion.setAttribute('aria-labelledby', `categoria-${id}`);
-        titulo.id = `categoria-${id}`;
-        seccion.append(titulo, grilla);
-        listado.append(seccion);
+    const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
+    if (productosFiltrados.length === 0) {
+        estadoCarga.textContent = productos.length
+            ? 'No hay productos disponibles en esta categoría.'
+            : 'No hay productos disponibles en este momento.';
+        return;
     }
+
+    if (paginaSeleccionada > totalPaginas) {
+        estadoCarga.textContent = 'No hay productos disponibles en esta página.';
+        return;
+    }
+
+    estadoCarga.textContent = '';
+    const grilla = document.createElement('div');
+    grilla.className = 'grilla';
+    const inicio = (paginaSeleccionada - 1) * PRODUCTOS_POR_PAGINA;
+    const productosPagina = productosFiltrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA);
+    for (const producto of productosPagina) {
+        grilla.append(crearProducto(producto));
+    }
+    listado.append(grilla);
+    listado.append(crearPaginacion(totalPaginas));
+}
+
+function crearPaginacion(totalPaginas) {
+    const navegacion = document.createElement('nav');
+    navegacion.className = 'paginacion';
+    navegacion.setAttribute('aria-label', 'Páginas de productos');
+
+    for (let pagina = 1; pagina <= totalPaginas; pagina += 1) {
+        const enlace = document.createElement('a');
+        enlace.className = 'boton-pagina';
+        enlace.href = `/productos/${pagina}?categoria=${encodeURIComponent(categoriaSeleccionada)}`;
+        enlace.textContent = String(pagina);
+        if (pagina === paginaSeleccionada) {
+            enlace.classList.add('activo');
+            enlace.setAttribute('aria-current', 'page');
+        }
+        navegacion.append(enlace);
+    }
+
+    return navegacion;
 }
 
 async function cargarProductos() {
@@ -141,10 +205,11 @@ async function cargarProductos() {
             pagina += 1;
         } while (pagina <= totalPaginas);
 
-        mostrarProductos(productos);
-        estadoCarga.textContent = productos.length
-            ? ''
-            : 'No hay productos disponibles en este momento.';
+        productosCargados = productos;
+        if (window.location.pathname === '/productos') {
+            actualizarRuta(paginaSeleccionada);
+        }
+        mostrarProductos(productosCargados);
     } catch (error) {
         console.error('Error al cargar productos:', error);
         estadoCarga.textContent = 'No se pudieron cargar los productos. Intenta nuevamente más tarde.';
