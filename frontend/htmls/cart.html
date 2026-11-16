@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carrito · La guitarra de Coco</title>
+    <link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/cart.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+
+    <script src="../scrypts/temas.js" defer></script>
+    <script src="../scrypts/cart-storage.js" defer></script>
+    <script src="../scrypts/cart.js" defer></script>
+    <script src="../scrypts/checkout.js" defer></script>
+</head>
+<body>
+    <!-- TODO ha que ocupar todo el espacio de la paguina -->
+    <header class="cabecera">
+        <a class="marca" href="/">
+            <img src="/assets/img/logo.svg" alt="Logo de La guitarra de Coco">
+            <span>La guitarra de Coco</span>
+        </a>
+        <nav class="nav" aria-label="Principal">
+            <button id="boton-tema" class="boton-mono-color">
+                <img id="icono-tema" src="../assets/img/modo oscuro.png" alt="Icono de tema">
+            </button>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="encabezado-pagina">
+            <h1>Carrito</h1>
+        </div>
+        <p id="estado-carga" role="status" aria-live="polite">Cargando carrito...</p>
+        <div id="listado-productos"></div>
+        <p id="total-carrito" class="total-carrito" aria-live="polite" hidden></p>
+        <div class="acciones-compra">
+            <button id="boton-confirmar-compra" class="boton-confirmar-compra" type="button" hidden>
+                Confirmar compra
+            </button>
+        </div>
+        <dialog id="modal-confirmacion" class="modal-confirmacion" aria-labelledby="titulo-confirmacion">
+            <form id="form-confirmacion">
+                <h2 id="titulo-confirmacion">Confirmar compra</h2>
+                <label for="nombre-cliente">Nombre del cliente</label>
+                <input id="nombre-cliente" name="nombreCliente" type="text" maxlength="255" required>
+                <p id="total-confirmacion" class="total-confirmacion"></p>
+                <p id="error-compra" class="error-compra" role="alert" hidden></p>
+                <div class="acciones-modal">
+                    <button id="cancelar-compra" class="boton-secundario" type="button">Volver al carrito</button>
+                    <button id="enviar-compra" class="boton-confirmar-compra" type="submit">Confirmar y comprar</button>
+                </div>
+            </form>
+        </dialog>
+    </main>
+    
+    <footer class="pie">
+        <p>La guitarra de Coco · TP Integrador de Programación III · UTN Avellaneda</p>
+        <p>Alumnos: Juárez · Palmieri</p>
+    </footer>
+</body>
+</html>

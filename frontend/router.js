@@ -3,4 +3,5 @@ module.exports = Object.freeze({
   "/login": "login.html",
   "/productos": "products.html",
   "/carrito": "cart.html",
+  "/ticket": "ticket.html",
 });

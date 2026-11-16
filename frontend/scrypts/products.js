@@ -4,6 +4,11 @@ const estadoCarga = document.getElementById('estado-carga');
 const botonesCategoria = document.querySelectorAll('[data-categoria]');
 const LOGO = '/assets/img/logo.svg';
 const PRODUCTOS_POR_PAGINA = 12;
+const nombreCliente = new URLSearchParams(window.location.search).get('nombre');
+if (nombreCliente && nombreCliente.trim()) {
+    sessionStorage.setItem('nombreCliente', nombreCliente.trim());
+}
+
 let productosCargados = null;
 let categoriaSeleccionada = obtenerCategoriaDeRuta();
 let paginaSeleccionada = obtenerPaginaDeRuta();
@@ -119,6 +124,24 @@ function crearProducto(producto) {
     boton.type = 'button';
     boton.className = 'boton boton-chico';
     boton.textContent = 'Agregar al carrito';
+    boton.disabled = Number(producto.stock) <= 0;
+    boton.addEventListener('click', () => {
+        try {
+            const resultado = window.carrito.agregar(producto);
+            if (resultado === 'sin-stock') {
+                estadoCarga.textContent = 'No hay más unidades disponibles de este producto.';
+                estadoCarga.className = 'alerta';
+                return;
+            }
+
+            estadoCarga.textContent = `${producto.nombre} se agregó al carrito.`;
+            estadoCarga.className = 'aviso';
+        } catch (error) {
+            console.error('Error al agregar el producto al carrito:', error);
+            estadoCarga.textContent = 'No se pudo actualizar el carrito. Intenta nuevamente.';
+            estadoCarga.className = 'alerta';
+        }
+    });
     cuerpo.append(boton);
 
     tarjeta.append(cabecera, informacion, cuerpo);
