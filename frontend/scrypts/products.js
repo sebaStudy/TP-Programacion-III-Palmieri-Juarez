@@ -4,10 +4,6 @@ const estadoCarga = document.getElementById('estado-carga');
 const botonesCategoria = document.querySelectorAll('[data-categoria]');
 const LOGO = '/assets/img/logo.svg';
 const PRODUCTOS_POR_PAGINA = 12;
-const nombreCliente = new URLSearchParams(window.location.search).get('nombre');
-if (nombreCliente && nombreCliente.trim()) {
-    sessionStorage.setItem('nombreCliente', nombreCliente.trim());
-}
 
 let productosCargados = null;
 let categoriaSeleccionada = obtenerCategoriaDeRuta();

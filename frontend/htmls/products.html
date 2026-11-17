@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Productos · La guitarra de Coco</title>
     <link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../styles/header.css">
     <link rel="stylesheet" href="../styles/general.css">
     <link rel="stylesheet" href="../styles/products.css">
-    <link rel="stylesheet" href="../styles/footer.css">
 
+    <script src="../scrypts/cliente.js"></script>
     <script src="../scrypts/temas.js" defer></script>
     <script src="../scrypts/cart-storage.js" defer></script>
     <script src="../scrypts/products.js" defer></script>
@@ -26,6 +25,10 @@
             </button>
             <a class="boton-mono-color boton-carrito" href="/carrito" aria-label="Ir al carrito">
                 <img src="../assets/img/carrito.png" alt="">
+            </a>
+            <a href="/admin/login" class="activo">
+                <span id="administrador">Administrador</span>
+                <span id="admin">Admin</span>
             </a>
         </nav>
     </header>
@@ -44,7 +47,7 @@
 
     <footer class="pie">
         <p>La guitarra de Coco · TP Integrador de Programación III · UTN Avellaneda</p>
-        <p>Alumnos: Juárez · Palmieri</p>
+        <p>Alumnos: Rocío Juárez · Sebastián Palmieri</p>
     </footer>
 </body>
 </html>

@@ -134,7 +134,20 @@ body{
     text-align: center;
 }
 
+/* Botón de acceso al panel del administrador: nombre completo en pantallas grandes y corto en celulares */
+#admin{
+    display: none;
+}
+
 @media (max-width: 483px){
+    #admin{
+        display: block;
+    }
+
+    #administrador{
+        display: none;
+    }
+
     .marca-text{
         display: none;
     }

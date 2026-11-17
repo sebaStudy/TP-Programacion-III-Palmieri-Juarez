@@ -14,6 +14,22 @@
     <script src="../scrypts/ticket.js" defer></script>
 </head>
 <body>
+    <header class="cabecera">
+        <a class="marca" href="/ticket">
+            <img src="/assets/img/logo.svg" alt="Logo de La guitarra de Coco">
+            <span>La guitarra de Coco</span>
+        </a>
+        <nav class="nav" aria-label="Principal">
+            <button id="boton-tema" class="boton-mono-color">
+                <img id="icono-tema" src="../assets/img/modo oscuro.png" alt="Icono de tema">
+            </button>
+            <a href="/admin/login" class="activo">
+                <span id="administrador">Administrador</span>
+                <span id="admin">Admin</span>
+            </a>
+        </nav>
+    </header>
+
     <main class="pagina-ticket">
         <section id="datos-ticket" class="ticket" hidden>
             <header class="cabecera-ticket">
@@ -56,7 +72,11 @@
                 Salir
             </button>
         </div>
-        <a class="volver-inicio" href="/productos">Volver a la bienvenida</a>
     </main>
+
+    <footer class="pie">
+        <p>La guitarra de Coco · TP Integrador de Programación III · UTN Avellaneda</p>
+        <p>Alumnos: Rocío Juárez · Sebastián Palmieri</p>
+    </footer>
 </body>
 </html>

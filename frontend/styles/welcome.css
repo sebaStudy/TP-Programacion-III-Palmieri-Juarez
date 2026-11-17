@@ -4,10 +4,6 @@
     flex-direction: column;
 }
 
-#admin{
-    display: none;
-}
-
 main{
     background-color: var(--crema);
     display: flex;
@@ -36,16 +32,6 @@ h1{
 #logo{
     width: 300px;
     height: 300px;
-}
-
-@media (max-width: 483px){
-    #admin{
-        display: block;
-    }
-
-    #administrador{
-        display: none;
-    }
 }
 
 h3{
