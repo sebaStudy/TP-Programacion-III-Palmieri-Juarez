@@ -1,0 +1,359 @@
+/* Estilos del back office. Estética de Día de Muertos. */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  background-color: var(--crema);
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+
+
+/* Cabecera */
+.marca img { width: 48px; height: 48px; }
+
+.nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.nav a {
+  color: var(--crema);
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 2px solid var(--transparente);
+  border-radius: 999px;
+}
+
+.nav a:hover { border-color: var(--naranja); }
+
+.nav a.activo {
+  background: var(--cempasuchil);
+  color: var(--morado-oscuro);
+  font-weight: 600;
+}
+
+.nav img{
+  height: 40px;
+  width: 40px;
+  filter: invert(1);
+}
+
+/* Celulares */
+@media (max-width: 386px) {
+  .cabecera { justify-content: center; text-align: center; }
+  .nav { justify-content: center; }
+}
+
+/* Títulos y botones */
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--texto);
+}
+
+h2 {
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.4rem;
+  font-size: 1.4rem;
+  color: var(--morado);
+  border-bottom: 3px dashed var(--cempasuchil);
+}
+
+.contador {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0 0.6rem;
+  font-size: 0.9rem;
+  color: var(--morado-oscuro);
+  background: var(--cempasuchil);
+  border-radius: 999px;
+}
+
+.encabezado-pagina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.filtros-categoria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  padding-bottom: 1.25rem;
+  border-bottom: 3px dashed var(--cempasuchil);
+}
+
+.boton-categoria {
+  padding: 0.6rem 1.2rem;
+  color: var(--morado-titulo);
+  font: inherit;
+  font-weight: 600;
+  background: var(--transparente);
+  border: 2px solid var(--morado-titulo);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.boton-categoria:hover,
+.boton-categoria.activo {
+  color: var(--texto-activo);
+  background: var(--cempasuchil);
+}
+
+.boton-categoria:focus-visible {
+  outline: 3px solid var(--naranja);
+  outline-offset: 3px;
+}
+
+.paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 2rem 0 1rem;
+}
+
+.boton-pagina {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--morado-titulo);
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--morado-titulo);
+  border-radius: 50%;
+}
+
+.boton-pagina:hover,
+.boton-pagina.activo {
+  color: var(--texto-activo);
+  background: var(--cempasuchil);
+}
+
+.boton-pagina:focus-visible {
+  outline: 3px solid var(--naranja);
+  outline-offset: 3px;
+}
+
+.boton {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  color: var(--blanco);
+  text-decoration: none;
+  background: var(--magenta);
+  border-radius: 999px;
+  transition: background 0.15s;
+  margin-top: 30px;
+}
+
+.boton:hover { background: var(--naranja); }
+.boton-chico { padding: 0.4rem 1rem; font-size: 0.9rem; }
+
+.vacio { color: var(--morado-titulo); font-style: italic; }
+
+/* Tarjetas de producto */
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(230px, calc((100% - 1.75rem) / 2)), 1fr));
+  gap: 1.75rem;
+}
+
+.tarjeta {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--superficie);
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 var(--sombra-tarjeta);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.tarjeta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0 var(--sombra-tarjeta-hover);
+}
+
+.tarjeta-cabecera {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(160deg, var(--magenta), var(--naranja) 70%, var(--cempasuchil));
+}
+
+.tarjeta.inactiva .tarjeta-cabecera::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--overlay-inactivo);
+  content: "";
+  pointer-events: none;
+}
+
+.tarjeta-cabecera .foto { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.tarjeta-cabecera .sin-foto {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  width: 40%;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+
+.tarjeta-info {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  padding: 2rem 0.9rem 0.7rem;
+  color: var(--blanco);
+  background: linear-gradient(var(--transparente), var(--overlay-tarjeta-fuerte));
+}
+
+.tarjeta-info h3 { margin: 0; font-size: 1rem; line-height: 1.25; }
+.tarjeta-info .precio { margin: 0.1rem 0 0; font-size: 1.5rem; font-weight: 700; color: var(--cempasuchil); }
+
+.tarjeta-cuerpo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow-y: auto;
+  padding: 1rem 1rem 6.5rem;
+  color: var(--blanco);
+  text-align: center;
+  background: linear-gradient(to top, var(--overlay-tarjeta-fuerte), var(--overlay-tarjeta-medio) 70%, var(--overlay-tarjeta-suave));
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+}
+
+.tarjeta:hover .tarjeta-cuerpo,
+.tarjeta:focus-within .tarjeta-cuerpo {
+  transform: translateY(0);
+}
+
+.tarjeta-cuerpo .descripcion {
+  margin: 0 0 0.75rem;
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.45rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--borde-en-oscuro);
+}
+
+.tarjeta-acciones { display: flex; gap: 0.5rem; margin-top: 0.9rem; }
+.tarjeta-acciones .boton { flex: 1; text-align: center; }
+
+.estado { font-weight: 600; }
+.estado.activo { color: var(--estado-activo); }
+.estado.inactivo { color: var(--estado-inactivo); }
+
+/* Avisos */
+.aviso, .alerta {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+.aviso { color: var(--exito); background: var(--exito-fondo); border: 2px solid var(--exito-borde); }
+.alerta { color: var(--error); background: var(--error-fondo); border: 2px solid var(--error-borde); }
+
+/* Formulario */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 640px;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--superficie);
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 var(--sombra-tarjeta);
+}
+
+.formulario label { margin-top: 0.6rem; font-weight: 600; color: var(--morado-titulo); }
+
+.formulario input[type="text"],
+.formulario input[type="number"],
+.formulario select,
+.formulario textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  color: var(--texto);
+  background: var(--crema);
+  border: 2px solid var(--borde-control);
+  border-radius: 10px;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: var(--magenta);
+}
+
+.dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.error { color: var(--error); font-weight: 600; }
+.ayuda { color: var(--texto-ayuda); }
+
+.imagen-actual { display: flex; align-items: center; gap: 0.75rem; }
+.imagen-actual img { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; }
+
+.acciones { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+
+button.boton { font: inherit; font-weight: 600; border: 0; cursor: pointer; }
+
+.boton-secundario { color: var(--morado-titulo); background: var(--transparente); border: 2px solid var(--morado-titulo); }
+.boton-secundario:hover { color: var(--blanco); background: var(--morado-titulo); }
+
+.boton-peligro { background: var(--peligro); }
+.boton-peligro:hover { background: var(--peligro-hover); }
+
+/* Modal de confirmación */
+.modal {
+  width: min(420px, 90vw);
+  padding: 1.5rem;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 8px 8px 0 var(--sombra-modal);
+}
+
+.modal::backdrop { background: var(--overlay-modal); }
+.modal h2 { margin-top: 0; }
+.modal-botones { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem; }
+
+@media (max-width: 600px) {
+  .dos-columnas { grid-template-columns: 1fr; }
+}

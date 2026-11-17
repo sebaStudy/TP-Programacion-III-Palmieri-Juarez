@@ -1,0 +1,49 @@
+body {
+    min-height: 100vh;
+    padding: 1.5rem;
+    color: var(--texto);
+    background: var(--crema);
+}
+
+.pagina-ticket {
+    width: min(100%, 800px);
+    margin: 0 auto;
+}
+
+.ticket {
+    padding: 1.5rem;
+    background: var(--superficie);
+    border: 2px solid var(--borde-control);
+    border-radius: 0.75rem;
+}
+
+.cabecera-ticket {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--morado-titulo);
+}
+
+.logo-ticket { width: 4rem; height: 4rem; }
+.empresa-ticket { font-weight: 700; }
+.datos-compra { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 0; }
+.datos-compra div { min-width: 12rem; }
+.datos-compra dt { font-weight: 700; }
+.datos-compra dd { margin: 0.25rem 0; }
+.tabla-contenedor { overflow-x: auto; }
+.ticket table { width: 100%; border-collapse: collapse; }
+.ticket th, .ticket td { padding: 0.6rem; text-align: left; border-bottom: 1px solid var(--borde-control); }
+.ticket tfoot th, .ticket tfoot td { font-size: 1.1rem; font-weight: 700; }
+.gracias-ticket { margin-top: 1.5rem; text-align: center; }
+.acciones-ticket { display: flex; justify-content: center; gap: 0.75rem; margin: 1.25rem 0; }
+#acciones-ticket[hidden] { display: none; }
+.boton-ticket { padding: 0.65rem 1rem; border: 0; border-radius: 0.5rem; font: inherit; cursor: pointer; }
+.boton-principal { color: var(--blanco); background: var(--morado); }
+.boton-secundario-ticket { color: var(--morado-oscuro); background: var(--cempasuchil); }
+.volver-inicio { display: block; text-align: center; }
+
+@media print {
+    body { padding: 0; background: #fff; }
+    .ticket { border: 0; }
+    .acciones-ticket, .volver-inicio { display: none; }
+}

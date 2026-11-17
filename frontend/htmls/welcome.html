@@ -4,12 +4,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- CSS -->
+        <link rel="stylesheet" href="../styles/header.css">
         <link rel="stylesheet" href="../styles/welcome.css">
         <link rel="stylesheet" href="../styles/general.css">
-        
+        <link rel="stylesheet" href="../styles/footer.css">
         
         <link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
-        <script src="../scrypts/welcome.js" defer></script>
+        <script src="../scrypts/temas.js" defer></script>
         <title>Main shop</title>
 </head>
 <body>
@@ -17,14 +18,14 @@
         <header class="cabecera">
             <a class="marca" href="">
                 <img src="../assets/img/logo.svg" alt="Logo de La guitarra de Coco">
-                <div id="marca-text-split">
+                <div id="titulo-text-split">
                     <span>La guitarra</span>
                     <span>de Coco</span>
                 </div>
                 <span class="marca-text">La guitarra de Coco</span>
             </a>
             <nav class="nav" aria-label="Principal">
-                <button id="boton-tema" class="btn-menu">
+                <button id="boton-tema" class="boton-mono-color">
                     <img id="icono-tema" src="../assets/img/modo oscuro.png" alt="Icono de tema">
                 </button>
                 <a href="/admin/dashboard" class="activo">
@@ -37,9 +38,11 @@
         <main>
             <img src="../assets/img/logo.svg" alt="logo" id="logo">
             <h1 class="marca-text">La guitarra de Coco</h1>
-            <h3>ingrese su nombre</h3>
-            <input class="input" placeholder="Nombre" type="text">
-            <button class="button">Confirmar</button>
+            <form class="form-ingreso" action="/productos" method="get">
+                <h3><label for="nombre">Ingrese su nombre</label></h3>
+                <input class="input" id="nombre" name="nombre" placeholder="Nombre" type="text" required pattern=".*\S.*" title="Ingrese un nombre válido.">
+                <button class="button" type="submit">Confirmar</button>
+            </form>
         </main>
         <footer class="pie">
             <p>La guitarra de Coco · TP Integrador de Programación III · UTN Avellaneda</p>

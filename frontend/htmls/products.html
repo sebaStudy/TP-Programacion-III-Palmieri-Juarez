@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Productos · La guitarra de Coco</title>
+    <link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="../styles/products.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+
+    <script src="../scrypts/temas.js" defer></script>
+    <script src="../scrypts/cart-storage.js" defer></script>
+    <script src="../scrypts/products.js" defer></script>
+</head>
+<body>
+    <header class="cabecera">
+        <a class="marca" href="/">
+            <img src="/assets/img/logo.svg" alt="Logo de La guitarra de Coco">
+            <span>La guitarra de Coco</span>
+        </a>
+        <nav class="nav" aria-label="Principal">
+            <button id="boton-tema" class="boton-mono-color">
+                <img id="icono-tema" src="../assets/img/modo oscuro.png" alt="Icono de tema">
+            </button>
+            <a class="boton-mono-color boton-carrito" href="/carrito" aria-label="Ir al carrito">
+                <img src="../assets/img/carrito.png" alt="">
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="encabezado-pagina">
+            <h1>Productos</h1>
+        </div>
+        <div class="filtros-categoria" role="group" aria-label="Filtrar productos por categoría">
+            <button class="boton-categoria activo" type="button" data-categoria="Instrumentos" aria-pressed="true">Instrumentos</button>
+            <button class="boton-categoria" type="button" data-categoria="Accesorios" aria-pressed="false">Accesorios</button>
+        </div>
+        <p id="estado-carga" role="status" aria-live="polite">Cargando productos...</p>
+        <div id="listado-productos"></div>
+    </main>
+
+    <footer class="pie">
+        <p>La guitarra de Coco · TP Integrador de Programación III · UTN Avellaneda</p>
+        <p>Alumnos: Juárez · Palmieri</p>
+    </footer>
+</body>
+</html>
