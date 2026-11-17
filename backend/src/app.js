@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const sequelize = require('./config/database');
 require('./models'); // registra los modelos para que sync() cree sus tablas
 const routes = require('./routes');
@@ -8,6 +9,11 @@ const adminRoutes = require('./routes/adminRoutes');
 const sitio = require('./config/sitio');
 const frontendRoutes = require('../../frontend/router');
 const frontendPath = path.join(__dirname, '..', '..', 'frontend');
+
+if (!process.env.JWT_SECRET) {
+  console.error('Falta JWT_SECRET en el archivo .env (mirá .env.example).');
+  process.exit(1);
+}
 
 const app = express();
 
@@ -32,11 +38,17 @@ for (const [ruta, archivo] of Object.entries(frontendRoutes)) {
 }
 
 app.use(express.json()); // permite leer el body en formato JSON
+app.use(express.urlencoded({ extended: false })); // permite leer los formularios HTML (login)
+app.use(cookieParser()); // permite leer la cookie con el token del login
 app.use('/api', routes); // todas las rutas de la API cuelgan de /api
 app.use('/admin', adminRoutes); // pantallas del back office (EJS)
 
-// Errores no previstos: se registran y se responde 500
+// Errores no previstos: se registran y se responde 500.
+// Si el cuerpo de la petición no es un JSON válido, es un error de quien lo envía (400), no del servidor.
 app.use((error, req, res, next) => {
+  if (error.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'El cuerpo de la petición no es un JSON válido' });
+  }
   console.error(error);
   res.status(500).json({ error: 'Error interno del servidor' });
 });

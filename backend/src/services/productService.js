@@ -45,9 +45,11 @@ async function cambiarEstado(id, activo) {
   return Product.findByPk(producto.id, incluirCategoria);
 }
 
-// Listado para el cliente: solo productos activos, paginado y con filtro opcional por categoría.
-async function listarActivos({ page, limit, categoryId }) {
-  const where = { activo: true };
+// Listado para el cliente: productos activos, paginado y con filtro opcional por categoría.
+// Solo con incluirInactivos (que la ruta permite únicamente a administradores) se suman los inactivos.
+async function listarActivos({ page, limit, categoryId, incluirInactivos = false }) {
+  const where = {};
+  if (!incluirInactivos) where.activo = true;
   if (categoryId) where.categoryId = categoryId;
 
   return Product.findAndCountAll({

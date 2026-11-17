@@ -41,6 +41,7 @@ const reglasId = [
 const reglasListado = [
   ...reglasPaginacion,
   query('categoryId').optional().isInt({ min: 1 }).withMessage('categoryId debe ser un entero positivo'),
+  query('incluirInactivos').optional().isBoolean().withMessage('incluirInactivos debe ser true o false'),
 ];
 
 // Junta los errores de express-validator y el de la imagen (que dejó multer) en una sola lista.
