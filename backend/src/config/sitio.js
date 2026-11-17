@@ -3,5 +3,5 @@
 module.exports = {
   nombre: 'La guitarra de Coco',
   logo: '/img/logo.svg',
-  alumnos: ['Juárez', 'Palmieri'],
+  alumnos: ['Rocío Juárez', 'Sebastián Palmieri'],
 };

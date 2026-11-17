@@ -1,13 +1,17 @@
 body {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
-    padding: 1.5rem;
     color: var(--texto);
     background: var(--crema);
 }
 
 .pagina-ticket {
+    flex: 1;
+    box-sizing: border-box;
     width: min(100%, 800px);
     margin: 0 auto;
+    padding: 1.5rem;
 }
 
 .ticket {
@@ -39,11 +43,10 @@ body {
 #acciones-ticket[hidden] { display: none; }
 .boton-ticket { padding: 0.65rem 1rem; border: 0; border-radius: 0.5rem; font: inherit; cursor: pointer; }
 .boton-principal { color: var(--blanco); background: var(--morado); }
-.boton-secundario-ticket { color: var(--morado-oscuro); background: var(--cempasuchil); }
-.volver-inicio { display: block; text-align: center; }
+.boton-secundario-ticket { color: var(--texto-activo); background: var(--cempasuchil); }
 
 @media print {
-    body { padding: 0; background: #fff; }
+    body { background: #fff; }
+    .cabecera, .pie, .acciones-ticket { display: none; }
     .ticket { border: 0; }
-    .acciones-ticket, .volver-inicio { display: none; }
 }

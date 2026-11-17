@@ -1,5 +1,5 @@
 const sitio = require('../config/sitio');
-const { registrarVenta, listarVentas, VENTAS_POR_PAGINA } = require('../services/saleService');
+const { registrarVenta, listarVentas, buscarVenta, VENTAS_POR_PAGINA } = require('../services/saleService');
 const { leerPaginacion } = require('../middlewares/validarPaginacion');
 
 const crear = async (req, res, next) => {
@@ -23,4 +23,11 @@ const listar = async (req, res) => {
   });
 };
 
-module.exports = { crear, listar };
+// GET /api/sales/:id (404 si no existe)
+const obtener = async (req, res) => {
+  const venta = await buscarVenta(req.params.id);
+  if (!venta) return res.status(404).json({ error: 'Venta no encontrada' });
+  res.json({ data: venta });
+};
+
+module.exports = { crear, listar, obtener };

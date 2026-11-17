@@ -4,10 +4,6 @@
     flex-direction: column;
 }
 
-#admin{
-    display: none;
-}
-
 main{
     background-color: var(--crema);
     display: flex;
@@ -38,16 +34,6 @@ h1{
     height: 300px;
 }
 
-@media (max-width: 483px){
-    #admin{
-        display: block;
-    }
-
-    #administrador{
-        display: none;
-    }
-}
-
 h3{
     margin-bottom: 0;
     margin-top: 2.5rem;
@@ -76,11 +62,11 @@ h3{
 }
 
 .input:hover {
-    background-color: var(--morado-oscuro);
+    background-color: var(--fondo-oscuro);
 }
 
 .input:focus {
-    background-color: var(--morado-oscuro);
+    background-color: var(--fondo-oscuro);
     outline-offset: -6px;
 }
 

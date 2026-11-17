@@ -28,7 +28,7 @@ main {
 .nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 .nav a {
-  color: var(--crema);
+  color: var(--texto-sobre-oscuro);
   text-decoration: none;
   padding: 0.4rem 0.9rem;
   border: 2px solid var(--transparente);
@@ -39,7 +39,7 @@ main {
 
 .nav a.activo {
   background: var(--cempasuchil);
-  color: var(--morado-oscuro);
+  color: var(--texto-activo);
   font-weight: 600;
 }
 
@@ -75,7 +75,7 @@ h2 {
   margin-left: 0.4rem;
   padding: 0 0.6rem;
   font-size: 0.9rem;
-  color: var(--morado-oscuro);
+  color: var(--texto-activo);
   background: var(--cempasuchil);
   border-radius: 999px;
 }
