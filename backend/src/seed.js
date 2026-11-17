@@ -3,6 +3,7 @@
 // ATENCIÓN: borra y vuelve a crear todas las tablas (se pierden los datos actuales).
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const adminPrueba = require('./config/adminPrueba');
 const sequelize = require('./config/database');
 const { Category, Product, User, Sale, SaleProduct } = require('./models');
 
@@ -57,9 +58,9 @@ async function seed() {
   ]);
 
   await User.create({
-    nombre: 'Administrador',
-    email: 'admin@autoservicio.com',
-    password: await bcrypt.hash('admin1234', 10), // se guarda el hash, no el texto
+    nombre: adminPrueba.nombre,
+    email: adminPrueba.email,
+    password: await bcrypt.hash(adminPrueba.password, 10), // se guarda el hash, no el texto
   });
 
   await Product.bulkCreate([
