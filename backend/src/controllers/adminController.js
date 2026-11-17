@@ -4,12 +4,16 @@ const { crearProducto, modificarProducto, cambiarEstado } = require('../services
 const { listarVentas, VENTAS_POR_PAGINA } = require('../services/saleService');
 const { leerPaginacion } = require('../middlewares/validarPaginacion');
 const { recolectarErrores, borrarImagenSubida } = require('../middlewares/validarProducto');
+const { verificarCredenciales, crearToken, crearAdmin, HORAS_DE_SESION } = require('../services/authService');
+const { NOMBRE_COOKIE, identificar } = require('../middlewares/autenticar');
+const adminPrueba = require('../config/adminPrueba');
 
 const MENSAJES = {
   creado: 'Producto creado correctamente',
   modificado: 'Producto modificado correctamente',
   desactivado: 'Producto desactivado: ya no se ve en la tienda',
   activado: 'Producto activado: vuelve a verse en la tienda',
+  administrador: 'Administrador creado correctamente',
 };
 
 const noEncontrado = (res) =>
@@ -155,7 +159,68 @@ const desactivar = responderEstado(false, 'desactivado');
 // POST /admin/products/:id/activar
 const activar = responderEstado(true, 'activado');
 
+// Muestra la pantalla de login. "acceso" son los datos que completa el botón de acceso rápido.
+const mostrarLogin = (res, { email = '', errores = [], status = 200 } = {}) =>
+  res.status(status).render('admin/login', { titulo: 'Ingresar', seccion: 'login', email, errores, acceso: adminPrueba });
+
+// GET /admin/login (si ya hay sesión iniciada, va directo al dashboard)
+const formularioLogin = (req, res) => {
+  if (identificar(req)) return res.redirect('/admin/dashboard');
+  mostrarLogin(res);
+};
+
+// POST /admin/login: con datos correctos guarda el token en una cookie y va al dashboard; si no, vuelve a mostrar el login con el error.
+const login = async (req, res) => {
+  const errores = recolectarErrores(req);
+  if (errores.length > 0) return mostrarLogin(res, { email: req.body.email, errores, status: 400 });
+
+  const usuario = await verificarCredenciales(req.body.email, req.body.password);
+  if (!usuario) {
+    const error = { campo: 'general', mensaje: 'Correo o contraseña incorrectos' };
+    return mostrarLogin(res, { email: req.body.email, errores: [error], status: 401 });
+  }
+
+  res.cookie(NOMBRE_COOKIE, crearToken(usuario), {
+    httpOnly: true, // el JavaScript de la página no puede leer esta cookie
+    sameSite: 'lax', // no se envía en pedidos que vienen de otros sitios
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: HORAS_DE_SESION * 60 * 60 * 1000,
+  });
+  res.redirect('/admin/dashboard');
+};
+
+// Muestra el formulario de nuevo administrador. "datos" es lo que se había escrito (la contraseña nunca se vuelve a mostrar).
+const mostrarFormularioUsuario = (res, { datos = {}, errores = [], status = 200 } = {}) =>
+  res.status(status).render('admin/user-form', { titulo: 'Nuevo administrador', seccion: 'usuario', datos, errores });
+
+// GET /admin/users/new
+const formularioUsuario = (req, res) => mostrarFormularioUsuario(res);
+
+// POST /admin/users: si los datos son válidos crea el administrador y vuelve al dashboard; si no, muestra los errores.
+const guardarUsuario = async (req, res) => {
+  const errores = recolectarErrores(req);
+  if (errores.length > 0) return mostrarFormularioUsuario(res, { datos: req.body, errores, status: 400 });
+
+  const usuario = await crearAdmin(req.body);
+  if (!usuario) {
+    const error = { campo: 'email', mensaje: 'Ya existe un usuario con ese correo' };
+    return mostrarFormularioUsuario(res, { datos: req.body, errores: [error], status: 409 });
+  }
+  res.redirect('/admin/dashboard?mensaje=administrador');
+};
+
+// POST /admin/logout: borra la cookie y vuelve al login.
+const cerrarSesion = (req, res) => {
+  res.clearCookie(NOMBRE_COOKIE);
+  res.redirect('/admin/login');
+};
+
 module.exports = {
+  formularioLogin,
+  login,
+  cerrarSesion,
+  formularioUsuario,
+  guardarUsuario,
   dashboard,
   formularioNuevo,
   formularioEditar,
