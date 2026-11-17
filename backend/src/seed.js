@@ -18,6 +18,14 @@ const instrumentos = [
   { nombre: 'Ukelele soprano', descripcion: 'Tamaño compacto, ideal para principiantes.', precio: 68000, stock: 10, imagen: '/img/productos/ukelele.jpg' },
   { nombre: 'Pandereta con parche', descripcion: 'Aro de madera con platillos de metal.', precio: 18000, stock: 15, activo: false, imagen: '/img/productos/pandereta.jpg' },
   { nombre: 'Armónica diatónica en Do', descripcion: 'Diez agujeros, afinación Richter.', precio: 24000, stock: 20, activo: false, imagen: '/img/productos/armonica.jpg' },
+  { nombre: 'Guitarra acústica con cutaway', descripcion: 'Tapa de abeto y cuerdas de acero, con ecualizador integrado.', precio: 310000, stock: 6 },
+  { nombre: 'Guitarra eléctrica tipo stratocaster', descripcion: 'Tres micrófonos single coil y puente con vibrato.', precio: 365000, stock: 7 },
+  { nombre: 'Bajo eléctrico de 5 cuerdas', descripcion: 'Mástil atornillado y electrónica activa de dos bandas.', precio: 470000, stock: 3 },
+  { nombre: 'Teclado controlador MIDI 49 teclas', descripcion: 'Con pads y perillas asignables, conexión USB.', precio: 240000, stock: 5 },
+  { nombre: 'Ukelele concierto', descripcion: 'Cuerpo de caoba con cuerdas de nylon y funda incluida.', precio: 92000, stock: 9 },
+  { nombre: 'Flauta dulce soprano', descripcion: 'Digitación alemana, ideal para estudio.', precio: 12000, stock: 30 },
+  { nombre: 'Bongós de madera', descripcion: 'Parches de cuero de 7 y 8 pulgadas con afinación a llave.', precio: 56000, stock: 10 },
+  { nombre: 'Charango de estudio', descripcion: 'Caja de madera maciza con diez cuerdas dobles.', precio: 135000, stock: 4 },
 ];
 
 const accesorios = [
@@ -31,6 +39,14 @@ const accesorios = [
   { nombre: 'Baquetas 5A de madera', descripcion: 'Par de baquetas de arce, punta de madera.', precio: 10500, stock: 33, imagen: '/img/productos/baquetas.jpg' },
   { nombre: 'Funda acolchada para guitarra', descripcion: 'Impermeable, con bolsillo frontal y correas de mochila.', precio: 32000, stock: 14 },
   { nombre: 'Soporte plegable para teclado', descripcion: 'Estructura en X, regulable en altura.', precio: 28000, stock: 9, activo: false },
+  { nombre: 'Atril plegable para partituras', descripcion: 'De metal, regulable en altura, con bolso de transporte.', precio: 21000, stock: 18 },
+  { nombre: 'Metrónomo digital', descripcion: 'Pantalla LCD, salida para auriculares y afinador integrado.', precio: 19500, stock: 20 },
+  { nombre: 'Soporte de piso para guitarra', descripcion: 'Trípode plegable con protección de espuma.', precio: 16500, stock: 15 },
+  { nombre: 'Pedal de distorsión', descripcion: 'Dos modos de ganancia, carcasa metálica.', precio: 54000, stock: 8 },
+  { nombre: 'Cuerdas para bajo 4 cuerdas', descripcion: 'Acero inoxidable, calibre 045-105.', precio: 23000, stock: 25 },
+  { nombre: 'Palillos de percusión con escobillas', descripcion: 'Par de escobillas retráctiles para batería y cajón.', precio: 13500, stock: 22 },
+  { nombre: 'Banqueta para teclado', descripcion: 'Regulable en altura, con asiento acolchado.', precio: 38000, stock: 11 },
+  { nombre: 'Auriculares de estudio', descripcion: 'Cerrados, con cable desmontable de 3 m.', precio: 42000, stock: 12 },
 ];
 
 // Ventas de ejemplo. Cada producto va con su cantidad: [nombre del producto, cantidad].
