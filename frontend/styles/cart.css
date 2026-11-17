@@ -1,5 +1,18 @@
 body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background-color: var(--crema);
+}
+
+/* Mismo ancho máximo y margen lateral que la lista de productos */
+main {
+    flex: 1;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
 }
 
 .boton-carrito {
