@@ -326,6 +326,8 @@ h2 {
 
 .formulario input[type="text"],
 .formulario input[type="number"],
+.formulario input[type="email"],
+.formulario input[type="password"],
 .formulario select,
 .formulario textarea {
   width: 100%;
@@ -440,3 +442,22 @@ button.boton { font: inherit; font-weight: 600; border: 0; cursor: pointer; }
 @media (max-width: 600px) {
   .dos-columnas { grid-template-columns: 1fr; }
 }
+
+/* Botón "Salir" del menú (es un formulario para poder usar POST) */
+.nav form { display: flex; margin: 0; }
+
+.nav .salir {
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  color: var(--crema);
+  cursor: pointer;
+  background: var(--transparente);
+  border: 2px solid var(--transparente);
+  border-radius: 999px;
+}
+
+.nav .salir:hover { border-color: var(--naranja); }
+
+/* Pantalla de login */
+.pagina-login { display: flex; flex-direction: column; align-items: center; }
+.pagina-login .formulario { width: 100%; max-width: 420px; }

@@ -44,7 +44,7 @@ Requisitos: Node.js 22 o superior y MySQL.
    ```sql
    CREATE DATABASE autoservicio;
    ```
-2. Dentro de `backend/`, copiar `.env.example` a `.env` y completar los datos de conexión (si MySQL no tiene contraseña, `DB_PASSWORD` queda vacío).
+2. Dentro de `backend/`, copiar `.env.example` a `.env` y completar los datos de conexión (si MySQL no tiene contraseña, `DB_PASSWORD` queda vacío) y poner en `JWT_SECRET` un texto largo y secreto: con él se firman los tokens del login. Sin `JWT_SECRET` el servidor no arranca.
 3. Instalar dependencias y cargar los datos iniciales:
    ```bash
    npm install
@@ -58,14 +58,21 @@ El servidor queda en `http://localhost:3000`.
 
 En Windows, instalar MySQL Community Server con el instalador oficial, crear la base con MySQL Workbench o desde la consola y poner en `.env` la contraseña elegida durante la instalación.
 
-**Administrador de prueba** (lo crea el seed): `admin@autoservicio.com` / `admin1234`.
+**Administrador de prueba** (lo crea el seed): `admin@autoservicio.com` / `admin1234`. La pantalla de login tiene un botón **Acceso rápido** que completa estos datos.
 
 ## Back office
 
-Pantallas con vistas EJS para administrar los productos y ver las ventas, en `http://localhost:3000/admin`:
+Pantallas con vistas EJS para administrar los productos y ver las ventas, en `http://localhost:3000/admin`.
+
+**Hace falta iniciar sesión:** todas las rutas, salvo el login, llevan a `/admin/login` si no hay sesión. Al ingresar con datos correctos, el servidor guarda un token en una cookie `httpOnly` (dura 8 horas) y redirige al dashboard; con datos incorrectos vuelve a mostrar el login con el error. El token es el mismo que usa la API.
 
 | Ruta | Qué muestra |
 |---|---|
+| `GET /admin/login` | Pantalla de login, con el botón de acceso rápido |
+| `POST /admin/login` | Valida el correo y la contraseña; si son correctos guarda la cookie y va al dashboard |
+| `POST /admin/logout` | Cierra la sesión (borra la cookie) y vuelve al login |
+| `GET /admin/users/new` | Formulario para crear otro administrador |
+| `POST /admin/users` | Guarda el administrador (contraseña encriptada) y vuelve al dashboard |
 | `GET /admin/dashboard` | Todos los productos (activos e inactivos), separados por categoría |
 | `GET /admin/products/new` | Formulario para agregar un producto |
 | `GET /admin/products/:id/edit` | El mismo formulario con los datos del producto cargados |
@@ -91,7 +98,7 @@ URL base: `http://localhost:3000/api`
 
 - Todas las respuestas son JSON, incluidos los errores.
 - Las peticiones con cuerpo envían `Content-Type: application/json`, salvo el alta y la modificación de productos, que usan `multipart/form-data` porque llevan una imagen.
-- **Autenticación:** las rutas marcadas como *admin* requieren el encabezado `Authorization: Bearer <token>`. El token se obtiene con `POST /auth/login`.
+- **Autenticación:** las rutas marcadas como *admin* requieren el encabezado `Authorization: Bearer <token>`. El token se obtiene con `POST /auth/login` y dura 8 horas. Las pantallas del back office usan el mismo token, guardado en una cookie al iniciar sesión.
 - **Precios:** se devuelven como número (`185000`), no como texto.
 - **Fechas:** formato ISO 8601 (`2026-10-20T14:30:00.000Z`).
 - **Imágenes:** las subidas por el alta o la modificación se guardan en el servidor y se sirven desde `/uploads/<archivo>`; las fotos de ejemplo del seed se sirven desde `/img/productos/<archivo>`. El campo `imagen` de un producto contiene esa ruta (por ejemplo `/uploads/1761500000000-ab12cd.jpg`) o `null`. Formatos permitidos: JPG, PNG y WEBP, hasta 2 MB.
@@ -213,8 +220,6 @@ Lista paginada de productos **activos**. Es la ruta que usa el cliente.
 ```
 
 **400** si `page`, `limit` (1 a 50) o `categoryId` no son enteros válidos. **401** si se usa `incluirInactivos=true` sin token.
-
-> Hasta que esté el login, `incluirInactivos` todavía no se aplica: el listado devuelve siempre solo los activos.
 
 ### `GET /products/:id`
 

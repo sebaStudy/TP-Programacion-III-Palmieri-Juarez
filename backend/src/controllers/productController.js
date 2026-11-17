@@ -22,12 +22,13 @@ function formatear(p) {
   };
 }
 
-// GET /api/products (solo productos activos, paginados)
-// TODO(login): con el token de administrador, aceptar incluirInactivos=true.
+// GET /api/products (productos activos, paginados)
+// Con incluirInactivos=true (y token de administrador) también trae los inactivos.
 const listar = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 6;
-  const { count, rows } = await listarActivos({ page, limit, categoryId: req.query.categoryId });
+  const incluirInactivos = req.query.incluirInactivos === 'true';
+  const { count, rows } = await listarActivos({ page, limit, categoryId: req.query.categoryId, incluirInactivos });
 
   res.json({
     data: rows.map(formatear),

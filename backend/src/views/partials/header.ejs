@@ -1,4 +1,4 @@
-<%# Logo, nombre de la app y barra de navegación. Variable opcional: seccion ('dashboard', 'nuevo' o 'ventas') %>
+<%# Logo, nombre de la app y barra de navegación. Variable opcional: seccion ('dashboard', 'nuevo', 'ventas', 'usuario' o 'login') %>
 <header class="cabecera">
   <a class="marca" href="/">
     <img src="<%= sitio.logo %>" alt="Logo de <%= sitio.nombre %>">
@@ -8,8 +8,16 @@
     <button id="boton-tema" class="boton-mono-color" type="button" aria-label="Cambiar tema">
       <img id="icono-tema" src="/assets/img/modo oscuro.png" alt="Cambiar tema">
     </button>
-    <a href="/admin/dashboard" class="<%= locals.seccion === 'dashboard' ? 'activo' : '' %>">Productos</a>
-    <a href="/admin/products/new" class="<%= locals.seccion === 'nuevo' ? 'activo' : '' %>">Agregar producto</a>
-    <a href="/admin/sales" class="<%= locals.seccion === 'ventas' ? 'activo' : '' %>">Ventas</a>
+    <% if (locals.seccion === 'login') { %>
+      <a href="/">Volver a la tienda</a>
+    <% } else { %>
+      <a href="/admin/dashboard" class="<%= locals.seccion === 'dashboard' ? 'activo' : '' %>">Productos</a>
+      <a href="/admin/products/new" class="<%= locals.seccion === 'nuevo' ? 'activo' : '' %>">Agregar producto</a>
+      <a href="/admin/sales" class="<%= locals.seccion === 'ventas' ? 'activo' : '' %>">Ventas</a>
+      <a href="/admin/users/new" class="<%= locals.seccion === 'usuario' ? 'activo' : '' %>">Nuevo administrador</a>
+      <form method="POST" action="/admin/logout">
+        <button type="submit" class="salir">Salir</button>
+      </form>
+    <% } %>
   </nav>
 </header>
