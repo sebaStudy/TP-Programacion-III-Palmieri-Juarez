@@ -76,11 +76,11 @@ h3{
 }
 
 .input:hover {
-    background-color: var(--morado-oscuro);
+    background-color: var(--fondo-oscuro);
 }
 
 .input:focus {
-    background-color: var(--morado-oscuro);
+    background-color: var(--fondo-oscuro);
     outline-offset: -6px;
 }
 

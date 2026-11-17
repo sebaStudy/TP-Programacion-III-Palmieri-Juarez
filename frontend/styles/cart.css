@@ -124,7 +124,7 @@ body{
 .boton-confirmar-compra { color: var(--blanco); background: var(--morado); }
 .boton-confirmar-compra:hover:not(:disabled) { background: var(--magenta); }
 .boton-confirmar-compra:disabled { cursor: wait; opacity: 0.65; }
-.boton-secundario { color: var(--morado-oscuro); background: var(--cempasuchil); }
+.boton-secundario { color: var(--texto-activo); background: var(--cempasuchil); }
 .boton-secundario:hover { background: var(--naranja); }
 
 .modal-confirmacion {

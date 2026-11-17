@@ -39,7 +39,7 @@ body {
 #acciones-ticket[hidden] { display: none; }
 .boton-ticket { padding: 0.65rem 1rem; border: 0; border-radius: 0.5rem; font: inherit; cursor: pointer; }
 .boton-principal { color: var(--blanco); background: var(--morado); }
-.boton-secundario-ticket { color: var(--morado-oscuro); background: var(--cempasuchil); }
+.boton-secundario-ticket { color: var(--texto-activo); background: var(--cempasuchil); }
 .volver-inicio { display: block; text-align: center; }
 
 @media print {
