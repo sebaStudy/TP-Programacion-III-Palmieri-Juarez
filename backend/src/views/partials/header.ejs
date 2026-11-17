@@ -1,4 +1,4 @@
-<%# Logo, nombre de la app y barra de navegación. Variable opcional: seccion ('dashboard' o 'nuevo') %>
+<%# Logo, nombre de la app y barra de navegación. Variable opcional: seccion ('dashboard', 'nuevo' o 'ventas') %>
 <header class="cabecera">
   <a class="marca" href="/">
     <img src="<%= sitio.logo %>" alt="Logo de <%= sitio.nombre %>">
@@ -10,5 +10,6 @@
     </button>
     <a href="/admin/dashboard" class="<%= locals.seccion === 'dashboard' ? 'activo' : '' %>">Productos</a>
     <a href="/admin/products/new" class="<%= locals.seccion === 'nuevo' ? 'activo' : '' %>">Agregar producto</a>
+    <a href="/admin/sales" class="<%= locals.seccion === 'ventas' ? 'activo' : '' %>">Ventas</a>
   </nav>
 </header>

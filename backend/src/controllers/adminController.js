@@ -1,5 +1,8 @@
+const { Op } = require('sequelize');
 const { Category, Product } = require('../models');
 const { crearProducto, modificarProducto, cambiarEstado } = require('../services/productService');
+const { listarVentas, VENTAS_POR_PAGINA } = require('../services/saleService');
+const { leerPaginacion } = require('../middlewares/validarPaginacion');
 const { recolectarErrores, borrarImagenSubida } = require('../middlewares/validarProducto');
 
 const MENSAJES = {
@@ -12,17 +15,66 @@ const MENSAJES = {
 const noEncontrado = (res) =>
   res.status(404).render('admin/error', { titulo: 'No encontrado', mensaje: 'El producto no existe.' });
 
-// GET /admin/dashboard: todos los productos (activos e inactivos) separados por categoría
+// GET /admin/dashboard: los productos (activos e inactivos) separados por categoría.
+// Filtros opcionales por URL: ?q=<texto del nombre>&categoryId=<id>&estado=activos|inactivos
 const dashboard = async (req, res) => {
+  const filtros = {
+    q: String(req.query.q ?? '').trim(),
+    categoryId: /^\d+$/.test(req.query.categoryId) ? req.query.categoryId : '', // si no es un número, se ignora
+    estado: ['activos', 'inactivos'].includes(req.query.estado) ? req.query.estado : '',
+  };
+
+  const dondeProducto = {};
+  if (filtros.q) dondeProducto.nombre = { [Op.like]: `%${filtros.q}%` };
+  if (filtros.estado === 'activos') dondeProducto.activo = true;
+  if (filtros.estado === 'inactivos') dondeProducto.activo = false;
+
+  // Todas las categorías con sus productos ya filtrados por nombre y estado:
+  // de acá salen las pestañas (con su cantidad) y las secciones que se muestran.
   const categorias = await Category.findAll({
-    include: Product,
+    include: { model: Product, where: dondeProducto, required: false }, // required: false deja las categorías sin coincidencias
     order: [['id', 'ASC'], [Product, 'nombre', 'ASC']],
   });
+  const visibles = filtros.categoryId ? categorias.filter((c) => String(c.id) === filtros.categoryId) : categorias;
+  const total = categorias.reduce((suma, c) => suma + c.Products.length, 0);
+
+  // Link de una pestaña: cambia la categoría y conserva el resto de los filtros.
+  const urlCategoria = (categoryId) => {
+    const params = new URLSearchParams();
+    if (filtros.q) params.set('q', filtros.q);
+    if (filtros.estado) params.set('estado', filtros.estado);
+    if (categoryId) params.set('categoryId', categoryId);
+    const consulta = params.toString();
+    return consulta ? `/admin/dashboard?${consulta}` : '/admin/dashboard';
+  };
+
   res.render('admin/dashboard', {
     titulo: 'Productos',
     seccion: 'dashboard',
     categorias,
+    visibles,
+    total,
+    urlCategoria,
+    filtros,
+    hayFiltros: Boolean(filtros.q || filtros.categoryId || filtros.estado),
     mensaje: MENSAJES[req.query.mensaje] || null,
+  });
+};
+
+// GET /admin/sales?page=N: las ventas con sus productos, de a una página
+const ventas = async (req, res) => {
+  const { page, limit } = leerPaginacion(req.query, VENTAS_POR_PAGINA);
+  const { ventas, totalItems } = await listarVentas({ page, limit });
+  const totalPages = Math.max(1, Math.ceil(totalItems / limit));
+
+  res.render('admin/sales', {
+    titulo: 'Ventas',
+    seccion: 'ventas',
+    ventas,
+    totalItems,
+    page,
+    totalPages,
+    fecha: (valor) => new Date(valor).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }),
   });
 };
 
@@ -112,4 +164,5 @@ module.exports = {
   guardarCambios,
   desactivar,
   activar,
+  ventas,
 };
