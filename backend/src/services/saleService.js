@@ -82,4 +82,13 @@ async function listarVentas({ page, limit }) {
   return { ventas: rows.map(formatearVenta), totalItems: count };
 }
 
-module.exports = { registrarVenta, listarVentas, VENTAS_POR_PAGINA };
+// Una venta con sus productos, o null si no existe.
+async function buscarVenta(id) {
+  const venta = await Sale.findByPk(id, {
+    include: Product,
+    order: [[Product, 'nombre', 'ASC']],
+  });
+  return venta ? formatearVenta(venta) : null;
+}
+
+module.exports = { registrarVenta, listarVentas, buscarVenta, VENTAS_POR_PAGINA };

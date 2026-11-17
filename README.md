@@ -137,7 +137,7 @@ Los errores de validación (400) agregan el detalle por campo:
 |---|---|
 | 400 | Datos inválidos o faltantes |
 | 401 | Falta el token, es inválido o las credenciales son incorrectas |
-| 404 | El recurso no existe |
+| 404 | El recurso no existe (también para cualquier ruta `/api/...` que no exista) |
 | 409 | Conflicto, por ejemplo un email ya registrado |
 | 500 | Error interno del servidor |
 
@@ -373,4 +373,20 @@ Listado paginado de ventas, de la más reciente a la más antigua, con los produ
 
 ### `GET /sales/:id` — admin
 
-Una venta con la misma forma que el ticket de `POST /sales`. **401**, **404**.
+Una venta con la misma forma que cada elemento de `GET /sales`, dentro de `data`.
+
+**200**
+```json
+{
+  "data": {
+    "id": 7,
+    "nombreCliente": "Rocío",
+    "fecha": "2026-10-20T14:30:00.000Z",
+    "total": 185000,
+    "productos": [
+      { "id": 1, "nombre": "Guitarra criolla clásica", "cantidad": 1, "precioUnitario": 185000, "subtotal": 185000 }
+    ]
+  }
+}
+```
+**400** si el id no es un entero positivo. **401** sin token. **404** si la venta no existe.
