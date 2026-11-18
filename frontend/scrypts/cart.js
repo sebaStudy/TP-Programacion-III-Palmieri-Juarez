@@ -50,7 +50,7 @@ function crearTarjetaCarrito(item) {
     quitar.setAttribute('aria-label', `Quitar ${producto.nombre} del carrito`);
     quitar.title = 'Quitar producto';
     const iconoCarrito = document.createElement('img');
-    iconoCarrito.src = '/assets/img/carrito.png';
+    iconoCarrito.src = '/assets/img/papelera.png';
     iconoCarrito.alt = '';
     quitar.append(iconoCarrito);
     quitar.addEventListener('click', () => actualizarCarrito(() => window.carrito.quitar(producto.id)));
