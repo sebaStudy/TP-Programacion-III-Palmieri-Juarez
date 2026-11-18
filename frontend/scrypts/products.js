@@ -2,16 +2,24 @@
 const listado = document.getElementById('listado-productos');
 const estadoCarga = document.getElementById('estado-carga');
 const botonesCategoria = document.querySelectorAll('[data-categoria]');
+const formularioFiltros = document.getElementById('filtros-productos');
+const campoBusqueda = document.getElementById('q');
+const campoCategoria = document.getElementById('categoria-busqueda');
 const LOGO = '/assets/img/logo.svg';
 const PRODUCTOS_POR_PAGINA = 12;
 
 let productosCargados = null;
 let categoriaSeleccionada = obtenerCategoriaDeRuta();
+let busquedaSeleccionada = obtenerBusquedaDeRuta();
 let paginaSeleccionada = obtenerPaginaDeRuta();
 
 function obtenerCategoriaDeRuta() {
     const categoria = new URLSearchParams(window.location.search).get('categoria');
     return categoria === 'Accesorios' ? categoria : 'Instrumentos';
+}
+
+function obtenerBusquedaDeRuta() {
+    return new URLSearchParams(window.location.search).get('q')?.trim() || '';
 }
 
 function obtenerPaginaDeRuta() {
@@ -26,9 +34,26 @@ function obtenerPaginaDeRuta() {
 
 function actualizarRuta(pagina) {
     const parametros = new URLSearchParams({ categoria: categoriaSeleccionada });
+    if (busquedaSeleccionada) {
+        parametros.set('q', busquedaSeleccionada);
+    }
     const ruta = `/productos/${pagina}?${parametros}`;
     window.history.replaceState(null, '', ruta);
 }
+
+campoBusqueda.value = busquedaSeleccionada;
+campoCategoria.value = categoriaSeleccionada;
+
+formularioFiltros.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    busquedaSeleccionada = campoBusqueda.value.trim();
+    paginaSeleccionada = 1;
+    campoCategoria.value = categoriaSeleccionada;
+    actualizarRuta(paginaSeleccionada);
+    if (productosCargados !== null) {
+        mostrarProductos(productosCargados);
+    }
+});
 
 botonesCategoria.forEach((boton) => {
     const seleccionado = boton.dataset.categoria === categoriaSeleccionada;
@@ -40,6 +65,7 @@ botonesCategoria.forEach((boton) => {
     boton.addEventListener('click', () => {
         categoriaSeleccionada = boton.dataset.categoria;
         paginaSeleccionada = 1;
+        campoCategoria.value = categoriaSeleccionada;
         actualizarRuta(paginaSeleccionada);
         botonesCategoria.forEach((otroBoton) => {
             const seleccionado = otroBoton === boton;
@@ -150,13 +176,18 @@ function mostrarProductos(productos) {
             throw new Error('Un producto no tiene una categoría asociada.');
         }
 
-        return producto.category.nombre === categoriaSeleccionada;
+        const coincideCategoria = producto.category.nombre === categoriaSeleccionada;
+        const coincideNombre = producto.nombre.toLocaleLowerCase('es-AR')
+            .includes(busquedaSeleccionada.toLocaleLowerCase('es-AR'));
+        return coincideCategoria && coincideNombre;
     });
 
     listado.replaceChildren();
     const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
     if (productosFiltrados.length === 0) {
-        estadoCarga.textContent = productos.length
+        estadoCarga.textContent = busquedaSeleccionada
+            ? 'No se encontraron productos con ese nombre en esta categoría.'
+            : productos.length
             ? 'No hay productos disponibles en esta categoría.'
             : 'No hay productos disponibles en este momento.';
         return;
@@ -187,7 +218,11 @@ function crearPaginacion(totalPaginas) {
     for (let pagina = 1; pagina <= totalPaginas; pagina += 1) {
         const enlace = document.createElement('a');
         enlace.className = 'boton-pagina';
-        enlace.href = `/productos/${pagina}?categoria=${encodeURIComponent(categoriaSeleccionada)}`;
+        const parametros = new URLSearchParams({ categoria: categoriaSeleccionada });
+        if (busquedaSeleccionada) {
+            parametros.set('q', busquedaSeleccionada);
+        }
+        enlace.href = `/productos/${pagina}?${parametros}`;
         enlace.textContent = String(pagina);
         if (pagina === paginaSeleccionada) {
             enlace.classList.add('activo');
