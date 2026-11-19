@@ -23,7 +23,6 @@ app.locals.sitio = sitio; // disponible en todas las vistas como "sitio"
 app.locals.precio = (valor) => // formato de precio para las vistas: $ 185.000
   Number(valor).toLocaleString('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 app.use(express.static(path.join(__dirname, '..', 'public'))); // CSS, logo, etc.
-app.use('/vendor/jspdf', express.static(path.join(__dirname, '..', 'node_modules', 'jspdf', 'dist')));
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // imágenes de productos
 app.use('/styles', express.static(path.join(frontendPath, 'styles')));
 app.use('/assets', express.static(path.join(frontendPath, 'assets')));

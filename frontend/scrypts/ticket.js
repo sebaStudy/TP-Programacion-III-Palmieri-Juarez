@@ -35,45 +35,37 @@ if (datosTicket && Array.isArray(datosTicket.productos)) {
     estado.textContent = 'No hay un ticket para mostrar.';
 }
 
-document.getElementById('boton-descargar-ticket').addEventListener('click', () => {
+document.getElementById('boton-descargar-ticket').addEventListener('click', async (event) => {
+    const boton = event.currentTarget;
     try {
-        const { jsPDF } = window.jspdf || {};
-        if (!jsPDF || !datosTicket) {
+        if (!datosTicket) {
             throw new Error('No se pudo generar el PDF del ticket.');
         }
 
-        const pdf = new jsPDF();
-        let posicion = 20;
-        const agregarLinea = (texto) => {
-            const lineas = pdf.splitTextToSize(String(texto), 180);
-            if (posicion + lineas.length * 6 > 280) {
-                pdf.addPage();
-                posicion = 20;
-            }
-            pdf.text(lineas, 15, posicion);
-            posicion += lineas.length * 6;
-        };
-
-        pdf.setFontSize(16);
-        agregarLinea(datosTicket.empresa);
-        agregarLinea('Ticket de compra');
-        pdf.setFontSize(11);
-        agregarLinea(`Cliente: ${datosTicket.nombreCliente}`);
-        agregarLinea(`Fecha: ${new Date(datosTicket.fecha).toLocaleString('es-AR')}`);
-        agregarLinea('');
-
-        datosTicket.productos.forEach((producto) => {
-            agregarLinea(`${producto.nombre} - Cantidad: ${producto.cantidad}`);
-            agregarLinea(`Precio: ${formatoPrecio(producto.precioUnitario)} - Subtotal: ${formatoPrecio(producto.subtotal)}`);
+        boton.disabled = true;
+        boton.textContent = 'Generando PDF...';
+        const respuesta = await fetch('/api/sales/pdf', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosTicket),
         });
+        if (!respuesta.ok) {
+            const resultado = await respuesta.json();
+            throw new Error(resultado.error || 'No se pudo generar el PDF del ticket.');
+        }
 
-        agregarLinea('');
-        pdf.setFontSize(13);
-        agregarLinea(`Total: ${formatoPrecio(datosTicket.total)}`);
-        pdf.save(`ticket-${datosTicket.id || 'compra'}.pdf`);
+        const url = URL.createObjectURL(await respuesta.blob());
+        const enlace = document.createElement('a');
+        enlace.href = url;
+        enlace.download = `ticket-${datosTicket.id || 'compra'}.pdf`;
+        enlace.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (error) {
         console.error('Error al descargar el ticket:', error);
-        estado.textContent = 'No se pudo descargar el PDF del ticket.';
+        estado.textContent = error.message || 'No se pudo descargar el PDF del ticket.';
+    } finally {
+        boton.disabled = false;
+        boton.textContent = 'Descargar PDF';
     }
 });
 document.getElementById('boton-salir').addEventListener('click', () => {

@@ -1,5 +1,5 @@
 const express = require('express');
-const { crear, listar, obtener } = require('../controllers/saleController');
+const { crear, listar, obtener, descargarPdf } = require('../controllers/saleController');
 const { reglasVenta } = require('../middlewares/validarVenta');
 const { reglasPaginacion } = require('../middlewares/validarPaginacion');
 const { requerirAdmin } = require('../middlewares/autenticar');
@@ -9,6 +9,7 @@ const router = express.Router();
 
 // Compra desde la tienda (pública)
 router.post('/', ...reglasVenta, responderErroresApi, crear);
+router.post('/pdf', descargarPdf);
 // Listado de ventas: solo para administradores.
 router.get('/', requerirAdmin, ...reglasPaginacion, responderErroresApi, listar);
 router.get('/:id', requerirAdmin, ...reglasId, responderErroresApi, obtener);
